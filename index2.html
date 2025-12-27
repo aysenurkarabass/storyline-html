@@ -19,15 +19,20 @@
             background-color: var(--bg-dark);
             color: white;
             margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            width: 100vw;
             height: 100vh;
-            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            overflow-x: hidden;
+            overflow-y: auto; /* allow vertical scrolling when content overflows */
+            -webkit-overflow-scrolling: touch;
             user-select: none;
         }
-
+        /* Giriş Ekranı */
         /* Giriş Ekranı */
         #intro-overlay {
             position: fixed;
@@ -48,6 +53,8 @@
             border-radius: 30px;
             border: 3px solid var(--primary);
             max-width: 600px;
+            max-height: calc(100vh - 120px);
+            overflow: auto;
             box-shadow: 0 0 50px rgba(56, 189, 248, 0.3);
         }
 
@@ -67,14 +74,23 @@
 
         /* Ana Sahne */
         #main-container {
-            display: none;
+            width: 100%;
+            height: 100%;
+            display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            gap: 2vh;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         #stage {
-            width: 1000px;
-            height: 500px;
+            width: 85vw;
+            height: 85vh;
+            max-width: 85vw;
+            max-height: calc(85vw * 9 / 16);
+            aspect-ratio: 16 / 9;
             background: linear-gradient(to bottom, #1e293b 0%, #0f172a 75%, #4527a0 75%, #311b92 100%);
             border: 4px solid #334155;
             border-radius: 24px;
@@ -96,6 +112,28 @@
             justify-content: center;
             padding: 40px;
             box-sizing: border-box;
+            overflow-y: auto; /* make evaluation content scrollable */
+        }
+
+        /* Custom scrollbar (WebKit browsers) */
+        body::-webkit-scrollbar {
+            width: 12px;
+        }
+        body::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.12);
+            border-radius: 10px;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.12) rgba(255,255,255,0.03);
         }
 
         .result-table {
@@ -116,44 +154,52 @@
 
         /* Adım Bilgi Paneli */
         #step-panel {
-            width: 1000px;
-            margin-top: 20px;
+            width: 90%;
+            max-width: 85vw;
+            margin: 0;
             display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 20px;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2vw;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         .instruction-box {
             background: #1e293b;
-            padding: 20px;
+            padding: 2vh;
             border-radius: 20px;
             border-left: 8px solid var(--primary);
-            font-size: 18px;
+            font-size: 1.8vh;
         }
 
         .result-box {
             background: #0f172a;
-            padding: 20px;
+            padding: 2vh;
             border-radius: 20px;
             border: 2px dashed #475569;
             color: var(--accent);
-            min-width: 350px;
+            min-width: 0;
             font-weight: 600;
+            font-size: 1.6vh;
         }
 
         .nav-buttons {
-            margin-top: 15px;
+            margin-top: 1.5vh;
             display: flex;
-            gap: 10px;
+            gap: 1vw;
+            flex-wrap: wrap;
         }
 
         .btn-nav {
             background: #334155;
             color: white;
             border: none;
-            padding: 8px 20px;
+            padding: 0.8vh 1vw;
             border-radius: 10px;
             cursor: pointer;
+            font-size: 1.4vh;
+            flex: 1;
+            min-width: auto;
         }
         .btn-nav.active { background: var(--primary); color: #000; }
         .btn-nav.finish { background: var(--success); color: #000; }
@@ -200,61 +246,78 @@
             font-size: 12px; font-weight: 600; color: #94a3b8; text-transform: uppercase;
             background: rgba(15, 23, 42, 0.8); padding: 2px 10px; border-radius: 10px; white-space: nowrap;
         }
+        #main-container {
+            width: 100%;
+            max-width: 100vw;
+            height: auto;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
 
-        /* Tüm sayfanın ekrana taşmasını engeller */
-html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-}
+        /* Sahnenin kendisi */
+        #stage {
+            transform-origin: top center;
+        }
 
-/* Ana sahne mobilde taşmasın */
-#stage {
-    max-width: 100%;
-    height: auto;
-    aspect-ratio: 2 / 1;
-}
+        /* Otomatik ölçekleme */
+        @media (max-width: 1400px) {
+            #stage {
+                width: 85vw;
+                height: auto;
+            }
+            #step-panel {
+                width: 85vw;
+            }
+        }
 
-/* Alt panel mobil uyumu */
-#step-panel {
-    width: 100%;
-    box-sizing: border-box;
-}
+        @media (max-width: 1200px) {
+            #stage {
+                width: 80vw;
+                height: auto;
+            }
+            #step-panel {
+                width: 80vw;
+            }
+        }
 
-/* Küçük ekranlar için düzen */
-@media (max-width: 768px) {
+        @media (max-width: 992px) {
+            #stage {
+                width: 85vw;
+                height: auto;
+            }
+            #step-panel {
+                width: 85vw;
+                grid-template-columns: 1fr;
+            }
+        }
 
-    #stage {
-        aspect-ratio: 1.4 / 1;
-    }
+        @media (max-width: 768px) {
+            #stage {
+                width: 90vw;
+                height: auto;
+            }
+            #step-panel {
+                width: 90vw;
+                grid-template-columns: 1fr;
+            }
+        }
 
-    #screen-container {
-        transform: scale(0.85);
-        transform-origin: center;
-    }
-
-    .btn-start {
-        font-size: 16px;
-        padding: 12px 20px;
-    }
-
-    .instruction-box,
-    .result-box {
-        font-size: 14px;
-    }
-}
-
-/* Çok küçük telefonlar */
-@media (max-width: 480px) {
-
-    #stage {
-        aspect-ratio: 1 / 1;
-    }
-
-    .btn-nav {
-        font-size: 13px;
-        padding: 6px 10px;
-    }
-}
+        @media (max-width: 576px) {
+            #stage {
+                width: 95vw;
+                height: auto;
+            }
+            #step-panel {
+                width: 95vw;
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -272,8 +335,8 @@ html, body {
     </div>
 
     <!-- DENEY ALANI -->
-    <div id="main-container">
-        <h2 id="step-title" style="color: var(--primary);">Adım 1: Işık Kaynağı Hreketinin Gölgeye Etkisi</h2>
+    <div id="main-container" style="display: none;">
+        <h2 id="step-title" style="color: var(--primary); font-size: 2.5vh; margin: 0;">Adım 1: Işık Kaynağı Hreketinin Gölgeye Etkisi</h2>
         
         <div id="stage">
             <!-- SONUÇ EKRANI PANELİ -->
