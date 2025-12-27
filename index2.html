@@ -413,6 +413,8 @@
     </div>
 
     <script>
+        // Responsive pozisyonlama: pozisyonlar % olarak tutulur, piksellere stage boyutuna göre çevrilir.
+        const stage = document.getElementById('stage');
         const flashlight = document.getElementById('flashlight');
         const object = document.getElementById('object');
         const screen = document.getElementById('screen-container');
@@ -424,7 +426,8 @@
         let isDragging = false;
         let activeEl = null;
 
-        let state = { lx: 80, ox: 450, sx: 800 };
+        // yüzde tabanlı başlangıç pozisyonları (0..1 arası)
+        let state = { lx: 0.08, ox: 0.45, sx: 0.8 };
 
         const steps = {
             1: {
@@ -457,12 +460,15 @@
             document.getElementById('intro-overlay').style.display = 'none';
             document.getElementById('main-container').style.display = 'flex';
             setStep(1);
+            // sahne ilk render'ı güncelle
+            updateScene();
         }
 
         function setStep(n) {
             currentStep = n;
             document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn' + n).classList.add('active');
+            const btn = document.getElementById('btn' + n);
+            if (btn) btn.classList.add('active');
             
             document.getElementById('step-title').innerText = steps[n].title;
             document.getElementById('instruction-text').innerHTML = steps[n].instruction;
@@ -481,53 +487,103 @@
         }
 
         function updateScene() {
-            flashlight.style.left = state.lx + "px";
-            object.style.left = state.ox + "px";
-            screen.style.left = state.sx + "px";
+            const rect = stage.getBoundingClientRect();
+            const stageW = rect.width;
+            const stageH = rect.height;
+            const centerY = stageH / 2;
 
-            const centerY = 250;
-            const fX = state.lx + 75;
-            const oX = state.ox + 30;
-            const sX = state.sx;
-            const objR = 30;
+            // responsive olarak ekran boyutunu ayarla (yüksek ekranlarda sınırla)
+            const screenW = Math.max(80, Math.min(160, Math.round(stageW * 0.14)));
+            const screenH = Math.max(100, Math.min(stageH * 0.9, Math.round(stageH * 0.6)));
+            screen.style.width = screenW + 'px';
+            screen.style.height = screenH + 'px';
 
-            const distLO = oX - fX;
-            const distLS = sX - fX;
-            
+            // element genişlikleri (güncel DOM boyutları)
+            const fW = flashlight.offsetWidth || 60;
+            const fH = flashlight.offsetHeight || 60;
+            const oW = object.offsetWidth || 60;
+            const oH = object.offsetHeight || 60;
+            const sW = screen.offsetWidth || screenW;
+            const sH = screen.offsetHeight || screenH;
+
+            // yüzde -> piksel (container içi koordinat)
+            const lxPx = Math.round(state.lx * stageW);
+            const oxPx = Math.round(state.ox * stageW);
+            const sxPx = Math.round(state.sx * stageW);
+
+            // elementleri stage içinde konumlandır (ortala)
+            flashlight.style.left = (lxPx - fW/2) + "px";
+            flashlight.style.top = (centerY - fH/2) + "px";
+            object.style.left = (oxPx - oW/2) + "px";
+            object.style.top = (centerY - oH/2) + "px";
+            screen.style.left = (sxPx - sW/2) + "px";
+            screen.style.top = (centerY - sH/2) + "px";
+
+            // ışık noktaları (center of elements)
+            const fX = lxPx;
+            const oX = oxPx;
+            const sX = sxPx;
+            const objR = Math.max(10, oW/2);
+
+            // uzaklıklar px
+            const distLO = Math.max(30, oX - fX);
+            const distLS = Math.max(distLO + 10, sX - fX);
+
+            // gölge yüksekliği hesapla (perspektiften elips)
             let shadowH = (objR * 2 * distLS) / distLO;
-            shadowH = Math.min(shadowH, 390);
-
-            // GÖLGE ŞEKLİ: Perde yan durduğu için perspektif gereği elips/oval olmalı
+            // sınırlama stage'e sığdır
+            shadowH = Math.min(shadowH, sH - 20, 0.95 * stageH);
             shadow.style.height = shadowH + "px";
-            shadow.style.width = (shadowH * 0.75) + "px"; // Genişliği yüksekliğinden az yaparak elips sağladık
+            shadow.style.width = Math.max(20, shadowH * 0.75) + "px";
 
+            // shadow pozisyonunu ekran yüzeyinin ortasına getir
+            // shadow, screen-surface içinde olduğundan burada transform yerine iç merkezleme kullanılır
+            const screenSurface = document.getElementById('screen-surface');
+            // shadow vertical center inside screen-surface
+            shadow.style.marginTop = Math.max(0, (sH - shadowH) / 2) + "px";
+
+            // beam polygon için üst-alt noktaları stage koordinatına göre ayarla
             const sTopY = centerY - (shadowH / 2);
             const sBottomY = centerY + (shadowH / 2);
-
+            // polygon points: fX,centerY  sX,sTopY  sX,sBottomY
             beamPath.setAttribute("points", `${fX},${centerY} ${sX},${sTopY} ${sX},${sBottomY}`);
+        }
+
+        function getClientXFromEvent(e) {
+            if (e.touches && e.touches.length) return e.touches[0].clientX;
+            return e.clientX !== undefined ? e.clientX : (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientX) || 0;
         }
 
         function onStart(e) {
             if (currentStep === 4) return;
-            const target = e.target.closest('.draggable');
-            if (target) {
+            const el = e.target.closest('.draggable');
+            if (el) {
                 isDragging = true;
-                activeEl = target;
+                activeEl = el;
             }
         }
 
         function onMove(e) {
-            if (!isDragging) return;
-            const rect = document.getElementById('stage').getBoundingClientRect();
-            const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+            if (!isDragging || !activeEl) return;
+            const rect = stage.getBoundingClientRect();
+            const clientX = getClientXFromEvent(e);
             let x = clientX - rect.left;
+            // normalize (0..1)
+            let pct = x / rect.width;
+            pct = Math.max(0.02, Math.min(0.98, pct));
+
+            // min gap'ler element genişliklerine göre yüzdeye çevrilir
+            const minGapPx = 60; // öğeler arası minimum px boşluk
+            const minGapPct = minGapPx / rect.width;
 
             if (activeEl === flashlight) {
-                state.lx = Math.max(10, Math.min(x - 40, state.ox - 150));
+                // flashlight max olarak objeden önce olmalı
+                state.lx = Math.min(pct, state.ox - minGapPct);
+                state.lx = Math.max(0.02, state.lx);
             } else if (activeEl === object) {
-                state.ox = Math.max(state.lx + 150, Math.min(x - 30, state.sx - 100));
+                state.ox = Math.max(state.lx + minGapPct, Math.min(pct, state.sx - minGapPct));
             } else if (activeEl === screen) {
-                state.sx = Math.max(state.ox + 100, Math.min(x - 90, 840));
+                state.sx = Math.max(state.ox + minGapPct, Math.min(pct, 0.98));
             }
             updateScene();
         }
@@ -537,11 +593,15 @@
         window.addEventListener('mousedown', onStart);
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onEnd);
-        window.addEventListener('touchstart', onStart);
-        window.addEventListener('touchmove', onMove);
+        window.addEventListener('touchstart', onStart, {passive: true});
+        window.addEventListener('touchmove', onMove, {passive: true});
         window.addEventListener('touchend', onEnd);
 
-        updateScene();
+        // pencere yeniden boyutlandığında yeniden çiz
+        window.addEventListener('resize', updateScene);
+
+        // ilk çizim (dosya yüklenince de çalışsın)
+        window.addEventListener('load', updateScene);
     </script>
 </body>
 </html>
