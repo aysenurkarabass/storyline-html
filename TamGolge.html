@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Tam Gölge – Noktasal Işık</title>
+<style>
+body { margin:0; background:#accef0; font-family:Arial; }
+canvas {
+  display:block;
+  margin:auto;
+  background:#f5f3f3;
+  border:1px solid #000000;
+  touch-action:none;
+}
+.controls{
+  width:1000px;
+  margin:6px auto;
+  display:flex;
+  gap:16px;
+  align-items:center;
+}
+button{ padding:6px 14px; font-size:14px; }
+label{ font-size:14px; }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <button id="penBtn">✏️ Kalem Modu</button>
+  <button id="clearBtn">🧹 Çizgileri Temizle</button>
+  <label>
+    Cisim Boyutu
+    <input type="range" id="sizeSlider" min="25" max="70" value="45">
+  </label>
+</div>
+
+<canvas id="canvas" width="1000" height="450"></canvas>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+let penMode=false, drawing=false, dragTarget=null, offsetX=0;
+let rays=[];
+
+// NESNELER
+const light={x:120,y:225,r:6};
+const object={x:400,y:225,r:45};
+const screen={x:760,y:40,w:90,h:370};
+
+// BUTONLAR
+penBtn.onclick=()=>{
+  penMode=!penMode;
+  penBtn.innerText=penMode?"🖱️ Taşıma Modu":"✏️ Kalem Modu";
+};
+clearBtn.onclick=()=>{rays=[];drawScene();};
+sizeSlider.oninput=e=>{object.r=+e.target.value;drawScene();};
+
+// ÇİZİM
+function drawScene(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // IŞIK PARILTI
+  const glow=ctx.createRadialGradient(light.x,light.y,1,light.x,light.y,25);
+  glow.addColorStop(0,"rgba(255,220,100,0.9)");
+  glow.addColorStop(1,"rgba(255,220,100,0)");
+  ctx.fillStyle=glow;
+  ctx.beginPath();
+  ctx.arc(light.x,light.y,25,0,Math.PI*2);
+  ctx.fill();
+
+  // IŞIK NOKTA
+  ctx.fillStyle="#ffd000";
+  ctx.beginPath();
+  ctx.arc(light.x,light.y,light.r,0,Math.PI*2);
+  ctx.fill();
+
+  // CİSİM
+  const grad=ctx.createRadialGradient(
+    object.x-object.r/3,object.y-object.r/3,5,
+    object.x,object.y,object.r
+  );
+  grad.addColorStop(0,"#ddd");
+  grad.addColorStop(1,"#555");
+  ctx.fillStyle=grad;
+  ctx.beginPath();
+  ctx.arc(object.x,object.y,object.r,0,Math.PI*2);
+  ctx.fill();
+
+  // PERDE (GENİŞ & UZUN)
+  const pgrad=ctx.createLinearGradient(screen.x+screen.w,0,screen.x,0);
+  pgrad.addColorStop(0,"#cfe8f3");
+  pgrad.addColorStop(1,"#7fb6d9");
+  ctx.fillStyle=pgrad;
+  ctx.beginPath();
+  ctx.moveTo(screen.x+screen.w,screen.y);
+  ctx.lineTo(screen.x,screen.y+25);
+  ctx.lineTo(screen.x,screen.y+screen.h-25);
+  ctx.lineTo(screen.x+screen.w,screen.y+screen.h);
+  ctx.closePath();
+  ctx.fill();
+
+  // IŞINLAR
+  ctx.strokeStyle="#000";
+  ctx.lineWidth=2;
+  rays.forEach(r=>{
+    ctx.beginPath();
+    ctx.moveTo(r.start.x,r.start.y);
+    ctx.lineTo(r.end.x,r.end.y);
+    ctx.stroke();
+  });
+
+  if(rays.length===2) drawShadow();
+
+  // ETİKETLER
+  ctx.fillStyle="#000";
+  ctx.font="14px Arial";
+  ctx.fillText("Işık",light.x-12,light.y+22);
+  ctx.fillText("Cisim",object.x-18,object.y+object.r+18);
+  ctx.fillText("Perde",screen.x+10,screen.y+screen.h+20);
+}
+
+// GÖLGE – TAM OTURAN ELİPS
+function drawShadow(){
+  const ys=rays.map(r=>{
+    const t=(screen.x-r.start.x)/(r.end.x-r.start.x);
+    return r.start.y+t*(r.end.y-r.start.y);
+  });
+
+  let top=Math.min(...ys);
+  let bottom=Math.max(...ys);
+
+  // PERDE İÇİNE SIĞDIR
+  top=Math.max(top,screen.y);
+  bottom=Math.min(bottom,screen.y+screen.h);
+
+  const h=bottom-top;
+  if(h<=0)return;
+
+  ctx.fillStyle="rgba(0,0,0,0.35)";
+  ctx.beginPath();
+  ctx.ellipse(
+    screen.x+screen.w/2,
+    top+h/2,
+    screen.w/2-8,
+    h/2,
+    0,0,Math.PI*2
+  );
+  ctx.fill();
+}
+
+// MOUSE
+canvas.onmousedown=e=>{
+  const r=canvas.getBoundingClientRect();
+  const x=e.clientX-r.left, y=e.clientY-r.top;
+
+  if(penMode && Math.hypot(x-light.x,y-light.y)<10 && rays.length<2){
+    drawing=true;
+    rays.push({start:{x:light.x,y:light.y},end:{x,y}});
+    return;
+  }
+
+  if(!penMode){
+    if(Math.hypot(x-light.x,y-light.y)<10){dragTarget=light;offsetX=x-light.x;}
+    else if(Math.hypot(x-object.x,y-object.y)<object.r){dragTarget=object;offsetX=x-object.x;}
+    else if(x>screen.x && x<screen.x+screen.w){dragTarget=screen;offsetX=x-screen.x;}
+  }
+};
+
+canvas.onmousemove=e=>{
+  const r=canvas.getBoundingClientRect();
+  const x=e.clientX-r.left, y=e.clientY-r.top;
+
+  if(drawing){
+    rays[rays.length-1].end={x,y};
+    drawScene();
+  }
+  else if(dragTarget){
+    dragTarget.x=x-offsetX;
+    drawScene();
+  }
+};
+
+canvas.onmouseup=()=>{drawing=false;dragTarget=null;};
+
+drawScene();
+</script>
+</body>
+</html>
