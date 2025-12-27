@@ -2,39 +2,85 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tam Gölge – Noktasal Işık</title>
 <style>
-body { margin:0; background:#accef0; font-family:Arial; }
+* { box-sizing: border-box; }
+body { 
+  margin:0; 
+  background:#accef0; 
+  font-family:Arial;
+  padding: 8px;
+}
+.container {
+  max-width: 1050px;
+  margin: 0 auto;
+}
 canvas {
   display:block;
   margin:auto;
   background:#f5f3f3;
   border:1px solid #000000;
   touch-action:none;
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
 }
 .controls{
-  width:1000px;
+  width: 100%;
+  max-width: 1000px;
   margin:6px auto;
   display:flex;
-  gap:16px;
+  gap:8px;
   align-items:center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-button{ padding:6px 14px; font-size:14px; }
-label{ font-size:14px; }
+button{ 
+  padding:6px 14px; 
+  font-size:clamp(12px, 2vw, 14px);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+label{ 
+  font-size:clamp(12px, 2vw, 14px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+input[type="range"] {
+  width: clamp(100px, 20vw, 150px);
+}
+
+@media (max-width: 600px) {
+  body { padding: 4px; }
+  .controls {
+    gap: 6px;
+  }
+  button {
+    padding: 5px 10px;
+  }
+  input[type="range"] {
+    width: 80px;
+  }
+}
 </style>
 </head>
 <body>
 
-<div class="controls">
-  <button id="penBtn">✏️ Kalem Modu</button>
-  <button id="clearBtn">🧹 Çizgileri Temizle</button>
-  <label>
-    Cisim Boyutu
-    <input type="range" id="sizeSlider" min="25" max="70" value="45">
-  </label>
-</div>
+<div class="container">
+  <div class="controls">
+    <button id="penBtn">✏️ Kalem Modu</button>
+    <button id="clearBtn">🧹 Çizgileri Temizle</button>
+    <label>
+      Cisim Boyutu
+      <input type="range" id="sizeSlider" min="25" max="70" value="45">
+    </label>
+  </div>
 
-<canvas id="canvas" width="1000" height="450"></canvas>
+  <canvas id="canvas" width="1000" height="450"></canvas>
+</div>
 
 <script>
 const canvas = document.getElementById("canvas");
@@ -42,11 +88,58 @@ const ctx = canvas.getContext("2d");
 
 let penMode=false, drawing=false, dragTarget=null, offsetX=0;
 let rays=[];
+let scale = 1;
+let originalLight, originalObject, originalScreen;
 
-// NESNELER
+// NESNELER (Orijinal değerler - 1000x450 canvas için)
 const light={x:120,y:225,r:6};
 const object={x:400,y:225,r:45};
 const screen={x:760,y:40,w:90,h:370};
+
+originalLight = {...light};
+originalObject = {...object};
+originalScreen = {...screen};
+
+// Canvas'ı responsive yap (16:9 oranında)
+function resizeCanvas() {
+  const container = canvas.parentElement;
+  const rect = container.getBoundingClientRect();
+  const maxWidth = Math.min(window.innerWidth - 16, 1000);
+  
+  canvas.style.width = maxWidth + 'px';
+  
+  const displayWidth = canvas.offsetWidth;
+  const displayHeight = displayWidth * (9/16); // 16:9 oranı
+  
+  canvas.style.height = displayHeight + 'px';
+  
+  // Canvas resolution'ı ayarla (çizim kalitesi için)
+  const rect2 = canvas.getBoundingClientRect();
+  canvas.width = Math.round(rect2.width);
+  canvas.height = Math.round(rect2.height);
+  
+  // Yeni canvas oranına göre scale'i ayarla
+  scale = canvas.width / 1000;
+  
+  // Nesneleri ölçekle
+  light.x = originalLight.x * scale;
+  light.y = originalLight.y * scale;
+  light.r = originalLight.r * scale;
+  
+  object.x = originalObject.x * scale;
+  object.y = originalObject.y * scale;
+  object.r = originalObject.r * scale;
+  
+  screen.x = originalScreen.x * scale;
+  screen.y = originalScreen.y * scale;
+  screen.w = originalScreen.w * scale;
+  screen.h = originalScreen.h * scale;
+  
+  drawScene();
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
 // BUTONLAR
 penBtn.onclick=()=>{
@@ -61,12 +154,12 @@ function drawScene(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
   // IŞIK PARILTI
-  const glow=ctx.createRadialGradient(light.x,light.y,1,light.x,light.y,25);
+  const glow=ctx.createRadialGradient(light.x,light.y,1,light.x,light.y,25*scale);
   glow.addColorStop(0,"rgba(255,220,100,0.9)");
   glow.addColorStop(1,"rgba(255,220,100,0)");
   ctx.fillStyle=glow;
   ctx.beginPath();
-  ctx.arc(light.x,light.y,25,0,Math.PI*2);
+  ctx.arc(light.x,light.y,25*scale,0,Math.PI*2);
   ctx.fill();
 
   // IŞIK NOKTA
@@ -77,7 +170,7 @@ function drawScene(){
 
   // CİSİM
   const grad=ctx.createRadialGradient(
-    object.x-object.r/3,object.y-object.r/3,5,
+    object.x-object.r/3,object.y-object.r/3,5*scale,
     object.x,object.y,object.r
   );
   grad.addColorStop(0,"#ddd");
@@ -94,15 +187,15 @@ function drawScene(){
   ctx.fillStyle=pgrad;
   ctx.beginPath();
   ctx.moveTo(screen.x+screen.w,screen.y);
-  ctx.lineTo(screen.x,screen.y+25);
-  ctx.lineTo(screen.x,screen.y+screen.h-25);
+  ctx.lineTo(screen.x,screen.y+25*scale);
+  ctx.lineTo(screen.x,screen.y+screen.h-25*scale);
   ctx.lineTo(screen.x+screen.w,screen.y+screen.h);
   ctx.closePath();
   ctx.fill();
 
   // IŞINLAR
   ctx.strokeStyle="#000";
-  ctx.lineWidth=2;
+  ctx.lineWidth=2*scale;
   rays.forEach(r=>{
     ctx.beginPath();
     ctx.moveTo(r.start.x,r.start.y);
@@ -114,10 +207,10 @@ function drawScene(){
 
   // ETİKETLER
   ctx.fillStyle="#000";
-  ctx.font="14px Arial";
-  ctx.fillText("Işık",light.x-12,light.y+22);
-  ctx.fillText("Cisim",object.x-18,object.y+object.r+18);
-  ctx.fillText("Perde",screen.x+10,screen.y+screen.h+20);
+  ctx.font=`${14*scale}px Arial`;
+  ctx.fillText("Işık",light.x-12*scale,light.y+22*scale);
+  ctx.fillText("Cisim",object.x-18*scale,object.y+object.r+18*scale);
+  ctx.fillText("Perde",screen.x+10*scale,screen.y+screen.h+20*scale);
 }
 
 // GÖLGE – TAM OTURAN ELİPS
@@ -142,7 +235,7 @@ function drawShadow(){
   ctx.ellipse(
     screen.x+screen.w/2,
     top+h/2,
-    screen.w/2-8,
+    screen.w/2-8*scale,
     h/2,
     0,0,Math.PI*2
   );
