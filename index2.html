@@ -82,14 +82,14 @@
         #header-section {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border-bottom: 3px solid var(--primary);
-            padding: clamp(8px, 1.5vh, 15px);
+            padding: 1.2vh;
             flex-shrink: 0;
             height: auto;
         }
 
         #step-title {
             color: var(--primary);
-            font-size: clamp(14px, 2vh, 18px);
+            font-size: 2vh;
             margin: 0;
             text-align: center;
             line-height: 1.2;
@@ -98,8 +98,9 @@
         #content-section {
             flex: 1;
             display: flex;
-            gap: clamp(8px, 1.5vw, 15px);
-            padding: clamp(8px, 1.5vh, 15px);
+            flex-direction: row !important;
+            gap: 1%;
+            padding: 1%;
             box-sizing: border-box;
             align-items: stretch;
             overflow: hidden;
@@ -152,6 +153,7 @@
 
         #stage {
             flex: 1;
+            width: 74%;
             height: 100%;
             background: linear-gradient(to bottom, #1e293b 0%, #0f172a 75%, #4527a0 75%, #311b92 100%);
             border: 4px solid #334155;
@@ -160,7 +162,7 @@
             overflow: hidden;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             perspective: 1000px;
-            min-height: auto;
+            min-height: 0;
         }
 
         /* SONUÇ EKRANI */
@@ -228,11 +230,12 @@
 
         /* Adım Bilgi Paneli */
         #step-panel {
-            width: clamp(220px, 25%, 280px);
-            min-width: 220px;
+            width: 24%;
+            min-width: 24%;
+            max-width: 24%;
             display: flex;
             flex-direction: column;
-            gap: clamp(8px, 1vh, 10px);
+            gap: 1vh;
             padding: 0;
             box-sizing: border-box;
             flex-shrink: 0;
@@ -240,10 +243,10 @@
 
         .instruction-box {
             background: #1e293b;
-            padding: clamp(10px, 1.2vh, 12px);
+            padding: 1.2vh 1vw;
             border-radius: 12px;
             border-left: 5px solid var(--primary);
-            font-size: clamp(13px, 1.8vh, 18px);
+            font-size: 1.6vh;
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -285,40 +288,41 @@
 
         .result-box {
             background: #0f172a;
-            padding: clamp(10px, 1.2vh, 12px);
+            padding: 1.2vh 1vw;
             border-radius: 12px;
             border: 2px dashed #475569;
             color: var(--accent);
             font-weight: 600;
-            font-size: clamp(14px, 2vh, 20px);
+            font-size: 1.8vh;
             margin-top: auto;
             line-height: 1.3;
         }
 
         .result-box-title {
-            font-size: clamp(12px, 1.6vh, 16px);
+            font-size: 1.4vh;
             opacity: 0.7;
-            margin-bottom: 5px;
+            margin-bottom: 0.5vh;
         }
 
         .nav-buttons {
             margin-top: auto;
-            padding-top: clamp(8px, 1.2vh, 12px);
+            padding-top: 1vh;
             display: flex;
             flex-direction: column;
-            gap: clamp(6px, 0.8vh, 8px);
+            gap: 0.7vh;
         }
 
         .btn-nav {
             background: #334155;
             color: white;
             border: none;
-            padding: clamp(8px, 1.2vh, 10px) clamp(10px, 1.5vw, 12px);
+            padding: 1vh 0.8vw;
             border-radius: 8px;
             cursor: pointer;
-            font-size: clamp(11px, 1.5vw, 13px);
+            font-size: 1.3vh;
             transition: all 0.3s;
             font-family: 'Fredoka', sans-serif;
+            white-space: nowrap;
         }
         .btn-nav:hover { background: #475569; transform: translateX(5px); }
         .btn-nav.active { background: var(--primary); color: #000; font-weight: 600; }
@@ -373,88 +377,7 @@
             margin-bottom: 15px;
         }
 
-        /* Responsive tasarım */
-        @media (max-width: 1200px) {
-            #step-panel {
-                width: clamp(250px, 30vw, 280px);
-                min-width: 250px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            #main-container {
-                height: auto;
-                min-height: 100vh;
-            }
-            #content-section {
-                flex-direction: column;
-                overflow-y: auto;
-                padding: 15px;
-            }
-            #step-panel {
-                width: 100%;
-                max-width: 100%;
-                min-width: auto;
-            }
-            #stage {
-                min-height: 400px;
-                height: 60vh;
-            }
-            .nav-buttons {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-            .btn-nav {
-                flex: 1;
-                min-width: 45%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            #header-section {
-                padding: 10px;
-            }
-            #content-section {
-                padding: 10px;
-                gap: 10px;
-            }
-            #stage {
-                min-height: 350px;
-                height: 50vh;
-            }
-            .instruction-box, .result-box {
-                padding: 15px;
-            }
-            .btn-nav {
-                padding: 10px 12px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            #step-title {
-                font-size: clamp(16px, 4vw, 20px);
-            }
-            #stage {
-                min-height: 300px;
-                height: 45vh;
-            }
-            .instruction-box, .result-box {
-                padding: 12px;
-            }
-            .nav-buttons {
-                gap: 8px;
-            }
-            .btn-nav {
-                min-width: 100%;
-                padding: 8px 10px;
-            }
-            #evaluation-screen {
-                padding: 20px;
-            }
-            .result-table {
-                font-size: clamp(12px, 3vw, 16px);
-            }
-        }
+        /* Storyline Web Object - Media queries devre dışı */
     </style>
 </head>
 <body>
