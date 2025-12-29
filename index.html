@@ -10,11 +10,98 @@ body {
   margin:0; 
   background:#accef0; 
   font-family:Arial;
-  padding: 8px;
+  padding: 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
 }
+.app{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  align-items:stretch;
+  max-width:1100px;
+  margin:0 auto;
+  padding:8px;
+}
+.top-controls, .position-controls{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content: center;
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  width:100%;
+  background: linear-gradient(180deg,#f7fbfe,#eef7fc);
+  padding:8px 12px;
+  border-radius:8px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.04);
+}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(180deg, rgba(6,12,34,0.55), rgba(6,12,34,0.65));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.overlay-card{
+  background: linear-gradient(180deg,#ffffff, #fbfdff);
+  max-width:820px;
+  width:92%;
+  padding:26px;
+  border-radius:14px;
+  box-shadow:0 24px 60px rgba(2,6,23,0.45);
+  color:#071023;
+  transform-origin:center;
+  animation: popIn 360ms ease both;
+}
+.overlay-card .hero{
+  display:flex;
+  gap:16px;
+  align-items:center;
+}
+.overlay-card h1{ margin:0 0 6px 0; font-size:22px; }
+.overlay-card .tag{ color:#0ea5a4; font-weight:700; font-size:13px; }
+.overlay-card h2{ margin:8px 0 6px 0; font-size:16px; color:#0b1220; }
+.overlay-card p, .overlay-card ul{ font-size:14px; line-height:1.6; color:#1f2937; }
+.overlay-card ul{ padding-left:18px; margin:6px 0 0 0; }
+.overlay-illustration{ width:140px; height:100px; flex:0 0 auto; }
+.start-btn{ background: linear-gradient(90deg,#06b6d4,#0891b2); color:#fff; border:none; padding:12px 22px; border-radius:10px; font-weight:700; cursor:pointer; box-shadow:0 8px 20px rgba(3,105,161,0.18); }
+.start-btn:hover{ transform:translateY(-2px); box-shadow:0 12px 28px rgba(3,105,161,0.2); }
+.overlay-footer{ text-align:center; margin-top:14px; }
+
+@keyframes popIn{ from{ transform: translateY(8px) scale(0.98); opacity:0 } to{ transform:none; opacity:1 } }
+.position-controls .pos-control{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background: #ffffff;
+  padding:6px 8px;
+  border-radius:8px;
+  box-shadow:0 6px 14px rgba(16,24,40,0.04);
+  border:1px solid rgba(15,23,42,0.04);
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: calc((100% - 24px) / 3);
+}
+.pos-label{ font-weight:600; color:#0f172a; margin-right:8px; min-width:48px; text-align:left; }
+.canvas-wrap{ width:100%; display:flex; justify-content:center; }
 .container {
-  max-width: 1050px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
+  /* force stage aspect ratio 16:9 so canvas + controls fit inside */
+  aspect-ratio: 16 / 9;
+  max-height: 90vh;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
 canvas {
   display:block;
@@ -23,9 +110,41 @@ canvas {
   border:1px solid #000000;
   touch-action:none;
   width: 100%;
-  max-width: 1000px;
-  height: auto;
+  height: 100%;
 }
+.position-controls .icon{
+  display:none;
+}
+.top-controls{ background: linear-gradient(90deg,#4facfe,#00f2fe); color:#fff; }
+.top-controls button{ background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.2); padding:8px 12px; border-radius:8px; transition: all 200ms ease; }
+.top-controls button.active{ background:rgba(34,197,94,0.8); border-color:rgba(34,197,94,0.5); }
+.top-controls label{ color:#fff; }
+
+/* Slider base style */
+input[type="range"]{
+  -webkit-appearance:none;
+  appearance:none;
+  height:6px;
+  border-radius:6px;
+  background:#e6eef7;
+  outline:none;
+  margin:0;
+  padding:0;
+  width: clamp(180px, 35vw, 420px);
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:18px; height:18px; border-radius:50%; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.2); border:3px solid #999;
+}
+input[type="range"]::-moz-range-thumb{ width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid #999; }
+
+/* Per-control colors */
+#lightSlider{ background: linear-gradient(90deg,#fff3bf,#ffd166); }
+#lightSlider::-webkit-slider-thumb{ border-color:#ffbf00; }
+#objectSlider{ background: linear-gradient(90deg,#f0f4ff,#b8d0ff); }
+#objectSlider::-webkit-slider-thumb{ border-color:#3b82f6; }
+#screenSlider{ background: linear-gradient(90deg,#e6fff7,#bfffe0); }
+#screenSlider::-webkit-slider-thumb{ border-color:#06b58b; }
 .controls{
   width: 100%;
   max-width: 1000px;
@@ -50,14 +169,18 @@ label{
   flex-shrink: 0;
 }
 input[type="range"] {
-  width: clamp(100px, 20vw, 150px);
+  width: 100%;
 }
 
+.position-controls .pos-control input[type="range"]{ width:100%; }
+
 @media (max-width: 600px) {
-  body { padding: 4px; }
+  body { padding: 8px; align-items:flex-start; }
   .controls {
     gap: 6px;
   }
+  .app{ flex-direction:column; }
+  .top-controls, .position-controls{ padding:6px; }
   button {
     padding: 5px 10px;
   }
@@ -69,17 +192,95 @@ input[type="range"] {
 </head>
 <body>
 
-<div class="container">
-  <div class="controls">
-    <button id="penBtn">✏️ Kalem Modu</button>
-    <button id="clearBtn">🧹 Çizgileri Temizle</button>
-    <label>
-      Cisim Boyutu
-      <input type="range" id="sizeSlider" min="25" max="70" value="45">
-    </label>
-  </div>
+<!-- Intro instruction overlay -->
+<div id="introOverlay" class="overlay">
+  <div class="overlay-card">
+    <div class="hero">
+      <div style="flex:1">
+        <div class="tag"> <h1>Deney Adı: Tam Gölge Oluşumu</h1></div>
+        <h2>Deneyin Amacı</h2>
+        <p>Bu simülasyonda noktasal bir ışık kaynağı, bir cisim ve perde kullanılarak tam gölge oluşumu incelenecektir. Deney elamanları farklı konumlara getirilerek gölgenin şekli ve boyutu gözlemlenecektir.</p>
+        <h2>Nasıl Kullanılır</h2>
+        <ul>
+          <li>Deney alanının altındaki kaydırıcı butonlar ile <strong>Işık</strong>, <strong>Cisim</strong> ve <strong>Perde</strong> yatay konumlarını ayarlayın.</li>
+          <li>"Cisim Boyutu" ile cismin yarıçapını (boyutunu) değiştirin.</li>
+          <li>Kalem modunda ışık kaynağından çıkan ışınları ekleyin; perde üzerinde oluşan gölgeyi inceleyin.</li>
+        </ul>
+      </div>
+      <div class="overlay-illustration">
+        <!-- schematic SVG updated by JS to accurately show rays and shadow -->
+        <svg id="introSVG" viewBox="0 0 260 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="objGrad" x1="0" x2="1">
+              <stop offset="0" stop-color="#f3f4f6" />
+              <stop offset="1" stop-color="#6b7280" />
+            </linearGradient>
+          </defs>
 
-  <canvas id="canvas" width="1000" height="450"></canvas>
+          <rect x="4" y="6" width="252" height="128" rx="8" fill="#f8fdff" stroke="#dff6fb" />
+
+          <!-- screen (position updated by JS) -->
+          <rect id="introScreen" x="212" y="28" width="12" height="84" rx="2" fill="#7fb6d9" stroke="#5b9ac6" />
+          <text id="introScreenLabel" x="218" y="120" font-size="11" text-anchor="middle" fill="#0f172a">Perde</text>
+
+          <!-- light and object (positions updated by JS) -->
+          <circle id="introLight" cx="36" cy="36" r="10" fill="#ffd166" stroke="#ffc107" />
+          <text id="introLightLabel" x="36" y="88" font-size="11" text-anchor="middle" fill="#0f172a">Işık</text>
+
+          <circle id="introObject" cx="120" cy="72" r="18" fill="url(#objGrad)" stroke="#475569" />
+          <text id="introObjectLabel" x="120" y="104" font-size="11" text-anchor="middle" fill="#0f172a">Cisim</text>
+
+          <!-- rays and shadow (placeholders updated by JS) -->
+          <line id="ray1" x1="36" y1="36" x2="200" y2="60" stroke="#000" stroke-opacity="0.14" stroke-width="1.8" stroke-linecap="round" />
+          <line id="ray2" x1="36" y1="36" x2="200" y2="100" stroke="#000" stroke-opacity="0.14" stroke-width="1.8" stroke-linecap="round" />
+
+          <ellipse id="introShadow" cx="218" cy="86" rx="12" ry="20" fill="rgba(0,0,0,0.18)" />
+
+          <!-- geometry helper lines -->
+          <line id="helper1" x1="36" y1="36" x2="120" y2="72" stroke="#0b1220" stroke-opacity="0.06" stroke-width="1" />
+        </svg>
+      </div>
+    </div>
+
+    <div class="overlay-footer">
+      <button id="startBtn" class="start-btn">Hadi Başlayalım</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="app">
+  <div class="container">
+    <div class="top-controls">
+      <button id="penBtn">✏️ Kalem Modu</button>
+      <button id="clearBtn">🧹 Çizgileri Temizle</button>
+      <label>
+        Cisim Boyutu
+        <input type="range" id="sizeSlider" min="25" max="70" value="45">
+      </label>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="canvas" width="1000" height="450"></canvas>
+    </div>
+
+    <div class="position-controls">
+      <label class="pos-control" title="Işık konumu">
+        <span class="pos-label">Işık</span>
+        <input type="range" id="lightSlider" min="0" max="1000" value="120" aria-label="Işık konumu">
+      </label>
+
+      <label class="pos-control" title="Cisim konumu">
+        <span class="pos-label">Cisim</span>
+        <input type="range" id="objectSlider" min="0" max="1000" value="400" aria-label="Cisim konumu">
+      </label>
+
+      <label class="pos-control" title="Perde konumu">
+        <span class="pos-label">Perde</span>
+        <input type="range" id="screenSlider" min="0" max="1000" value="760" aria-label="Perde konumu">
+      </label>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -102,23 +303,13 @@ originalScreen = {...screen};
 
 // Canvas'ı responsive yap (16:9 oranında)
 function resizeCanvas() {
-  const container = canvas.parentElement;
-  const rect = container.getBoundingClientRect();
-  const maxWidth = Math.min(window.innerWidth - 16, 1000);
-  
-  canvas.style.width = maxWidth + 'px';
-  
-  const displayWidth = canvas.offsetWidth;
-  const displayHeight = displayWidth * (9/16); // 16:9 oranı
-  
-  canvas.style.height = displayHeight + 'px';
-  
-  // Canvas resolution'ı ayarla (çizim kalitesi için)
-  const rect2 = canvas.getBoundingClientRect();
-  canvas.width = Math.round(rect2.width);
-  canvas.height = Math.round(rect2.height);
-  
-  // Yeni canvas oranına göre scale'i ayarla
+  // Use the actual canvas bounding box so it always fits the 16:9 stage
+  const rect = canvas.getBoundingClientRect();
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.width = Math.round(rect.width);
+  canvas.height = Math.round(rect.height);
+  // scale relative to design width (1000)
   scale = canvas.width / 1000;
   
   // Nesneleri ölçekle
@@ -135,19 +326,130 @@ function resizeCanvas() {
   screen.w = originalScreen.w * scale;
   screen.h = originalScreen.h * scale;
   
+  // Update sliders (if present) to reflect original coordinates
+  const ls = document.getElementById('lightSlider');
+  if(ls) ls.value = Math.round(originalLight.x);
+  const os = document.getElementById('objectSlider');
+  if(os) os.value = Math.round(originalObject.x);
+  const ss = document.getElementById('screenSlider');
+  if(ss) ss.value = Math.round(originalScreen.x);
+
   drawScene();
 }
 
 window.addEventListener('resize', resizeCanvas);
+// Don't immediately show the simulation until user starts — keep canvas sized but overlay visible
 resizeCanvas();
+
+// Intro overlay behavior
+const introOverlay = document.getElementById('introOverlay');
+const startBtn = document.getElementById('startBtn');
+// draw schematic in intro SVG with correct rays/shadow (responsive)
+function drawIntroSchematic(){
+  const svg = document.getElementById('introSVG');
+  if(!svg) return;
+  const vb = svg.viewBox && svg.viewBox.baseVal ? svg.viewBox.baseVal : { width:260, height:140 };
+  const W = vb.width, H = vb.height;
+
+  // positions as relative fractions so schematic is centered
+  const L = { x: W * 0.12, y: H * 0.25 };
+  const C = { x: W * 0.52, y: H * 0.55, r: Math.max(10, H * 0.12) };
+  const screenCenterX = W * 0.85;
+  const screenW = Math.max(8, W * 0.04);
+  const screenH = Math.max(48, H * 0.6);
+  const screenX = screenCenterX - screenW/2;
+  const screenY = (H/2) - screenH/2;
+
+  // compute tangent points from L to circle centered at C
+  const dx = L.x - C.x, dy = L.y - C.y;
+  const d = Math.hypot(dx,dy);
+  if(d <= C.r + 0.1) return;
+  const a = Math.atan2(dy, dx);
+  const b = Math.acos(C.r / d);
+  const t1 = a + b;
+  const t2 = a - b;
+  const tp1 = { x: C.x + C.r * Math.cos(t1), y: C.y + C.r * Math.sin(t1) };
+  const tp2 = { x: C.x + C.r * Math.cos(t2), y: C.y + C.r * Math.sin(t2) };
+
+  function extendToScreen(P){
+    const x = screenCenterX;
+    const y = L.y + ( (P.y - L.y) / (P.x - L.x) ) * (x - L.x);
+    return { x, y };
+  }
+  const e1 = extendToScreen(tp1);
+  const e2 = extendToScreen(tp2);
+
+  const introLight = document.getElementById('introLight');
+  const introObject = document.getElementById('introObject');
+  const introScreen = document.getElementById('introScreen');
+  const lightLabel = document.getElementById('introLightLabel');
+  const objLabel = document.getElementById('introObjectLabel');
+  const screenLabel = document.getElementById('introScreenLabel');
+  const ray1 = document.getElementById('ray1');
+  const ray2 = document.getElementById('ray2');
+  const shadow = document.getElementById('introShadow');
+  const helper = document.getElementById('helper1');
+
+  if(introLight){ introLight.setAttribute('cx', L.x); introLight.setAttribute('cy', L.y); introLight.setAttribute('r', Math.max(6, H*0.07)); }
+  if(lightLabel){ lightLabel.setAttribute('x', L.x); lightLabel.setAttribute('y', L.y + Math.max(26, H*0.2)); }
+
+  if(introObject){ introObject.setAttribute('cx', C.x); introObject.setAttribute('cy', C.y); introObject.setAttribute('r', C.r); }
+  if(objLabel){ objLabel.setAttribute('x', C.x); objLabel.setAttribute('y', C.y + C.r + 12); }
+
+  if(introScreen){ introScreen.setAttribute('x', screenX); introScreen.setAttribute('y', screenY); introScreen.setAttribute('width', screenW); introScreen.setAttribute('height', screenH); }
+  if(screenLabel){ screenLabel.setAttribute('x', screenCenterX); screenLabel.setAttribute('y', screenY + screenH + 12); }
+
+  if(ray1){ ray1.setAttribute('x1', L.x); ray1.setAttribute('y1', L.y); ray1.setAttribute('x2', e1.x); ray1.setAttribute('y2', e1.y); }
+  if(ray2){ ray2.setAttribute('x1', L.x); ray2.setAttribute('y1', L.y); ray2.setAttribute('x2', e2.x); ray2.setAttribute('y2', e2.y); }
+
+  if(shadow){ const cy = (e1.y + e2.y)/2; const ry = Math.abs(e2.y - e1.y)/2; shadow.setAttribute('cx', screenCenterX); shadow.setAttribute('cy', cy); shadow.setAttribute('rx', Math.max(8, screenW*1.2)); shadow.setAttribute('ry', Math.max(6, ry)); }
+
+  if(helper){ helper.setAttribute('x1', L.x); helper.setAttribute('y1', L.y); helper.setAttribute('x2', C.x); helper.setAttribute('y2', C.y); }
+}
+drawIntroSchematic();
+window.addEventListener('resize', drawIntroSchematic);
+if(startBtn){
+  startBtn.onclick = () => {
+    if(introOverlay) introOverlay.style.display = 'none';
+    // ensure canvas resized for visible area
+    resizeCanvas();
+  };
+}
+
+// POSITION SLIDERS
+const lightSlider = document.getElementById('lightSlider');
+const objectSlider = document.getElementById('objectSlider');
+const screenSlider = document.getElementById('screenSlider');
+
+if(lightSlider){
+  lightSlider.oninput = e => {
+    originalLight.x = +e.target.value;
+    light.x = originalLight.x * scale;
+    drawScene();
+  };
+}
+if(objectSlider){
+  objectSlider.oninput = e => {
+    originalObject.x = +e.target.value;
+    object.x = originalObject.x * scale;
+    drawScene();
+  };
+}
+if(screenSlider){
+  screenSlider.oninput = e => {
+    originalScreen.x = +e.target.value;
+    screen.x = originalScreen.x * scale;
+    drawScene();
+  };
+}
 
 // BUTONLAR
 penBtn.onclick=()=>{
   penMode=!penMode;
-  penBtn.innerText=penMode?"🖱️ Taşıma Modu":"✏️ Kalem Modu";
+  penBtn.classList.toggle('active', penMode);
 };
 clearBtn.onclick=()=>{rays=[];drawScene();};
-sizeSlider.oninput=e=>{object.r=+e.target.value;drawScene();};
+sizeSlider.oninput=e=>{ originalObject.r=+e.target.value; object.r = originalObject.r * scale; drawScene(); };
 
 // ÇİZİM
 function drawScene(){
@@ -243,35 +545,29 @@ function drawShadow(){
 }
 
 // MOUSE
-canvas.onmousedown=e=>{
-  const r=canvas.getBoundingClientRect();
-  const x=e.clientX-r.left, y=e.clientY-r.top;
+canvas.onmousedown = e => {
+  const r = canvas.getBoundingClientRect();
+  const x = e.clientX - r.left, y = e.clientY - r.top;
 
-  if(penMode && Math.hypot(x-light.x,y-light.y)<10 && rays.length<2){
-    drawing=true;
-    rays.push({start:{x:light.x,y:light.y},end:{x,y}});
+  // allow drawing rays in pen mode only; do not enable dragging of elements
+  if (penMode && Math.hypot(x - light.x, y - light.y) < 10 && rays.length < 2) {
+    drawing = true;
+    rays.push({ start: { x: light.x, y: light.y }, end: { x, y } });
     return;
   }
 
-  if(!penMode){
-    if(Math.hypot(x-light.x,y-light.y)<10){dragTarget=light;offsetX=x-light.x;}
-    else if(Math.hypot(x-object.x,y-object.y)<object.r){dragTarget=object;offsetX=x-object.x;}
-    else if(x>screen.x && x<screen.x+screen.w){dragTarget=screen;offsetX=x-screen.x;}
-  }
+  // no dragging: sliders control positions
 };
 
-canvas.onmousemove=e=>{
-  const r=canvas.getBoundingClientRect();
-  const x=e.clientX-r.left, y=e.clientY-r.top;
+canvas.onmousemove = e => {
+  const r = canvas.getBoundingClientRect();
+  const x = e.clientX - r.left, y = e.clientY - r.top;
 
-  if(drawing){
-    rays[rays.length-1].end={x,y};
+  if (drawing) {
+    rays[rays.length - 1].end = { x, y };
     drawScene();
   }
-  else if(dragTarget){
-    dragTarget.x=x-offsetX;
-    drawScene();
-  }
+  // dragging disabled — sliders control element positions
 };
 
 canvas.onmouseup=()=>{drawing=false;dragTarget=null;};
