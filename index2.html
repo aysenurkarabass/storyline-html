@@ -74,23 +74,96 @@
 
         /* Ana Sahne */
         #main-container {
+            width: 100vw;
+            height: 100vh;
+            max-width: 177.78vh; /* 16:9 aspect ratio için */
+            max-height: 56.25vw; /* 16:9 aspect ratio için */
+            margin: 0 auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        #header-section {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 3px solid var(--primary);
+            padding: clamp(10px, 2vh, 20px);
+            flex-shrink: 0;
+        }
+
+        #step-title {
+            color: var(--primary);
+            font-size: clamp(18px, 3vw, 24px);
+            margin: 0;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        #content-section {
+            flex: 1;
+            display: flex;
+            gap: clamp(10px, 2vw, 20px);
+            padding: clamp(10px, 2vh, 20px);
+            box-sizing: border-box;
+            align-items: stretch;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        /* SONUÇ EKRANI - OVERLAY */
+        #evaluation-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            grid-template-rows: auto auto auto;
-            gap: 2vh;
-            padding: 20px;
+            background: rgba(30, 41, 59, 0.98);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
             box-sizing: border-box;
-            align-items: start;
+            overflow-y: auto;
+        }
+
+        #evaluation-screen.show {
+            display: flex;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        .close-btn:hover {
+            transform: scale(1.2);
+            color: var(--primary);
         }
 
         #stage {
-            width: auto;
-            height: auto;
-            max-width: 60vw;
-            max-height: 80vh;
-            aspect-ratio: 16 / 9;
+            flex: 1;
+            height: 100%;
             background: linear-gradient(to bottom, #1e293b 0%, #0f172a 75%, #4527a0 75%, #311b92 100%);
             border: 4px solid #334155;
             border-radius: 24px;
@@ -98,9 +171,7 @@
             overflow: hidden;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             perspective: 1000px;
-            flex-shrink: 0;
-            grid-column: 2;
-            grid-row: 2;
+            min-height: clamp(400px, 50vh, 600px);
         }
 
         /* SONUÇ EKRANI */
@@ -147,6 +218,74 @@
             border-radius: 15px;
             overflow: hidden;
             margin: 20px 0;
+            font-size: clamp(14px, 2.2vw, 20px);
+        }
+        .result-table th, .result-table td {
+            padding: clamp(10px, 1.5vw, 15px);
+            border: 1px solid #334155;
+            text-align: left;
+        }
+        .result-table th { background: var(--primary); color: #000; }
+
+        #evaluation-screen h1 {
+            font-size: clamp(24px, 4vw, 32px);
+            margin-bottom: 20px;
+        }
+
+        #evaluation-screen p {
+            font-size: clamp(16px, 2.5vw, 24px);
+            line-height: 1.6;
+        }
+
+        /* Adım Bilgi Paneli */
+        #step-panel {
+            width: clamp(280px, 25vw, 350px);
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 0;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .instruction-box {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 20px;
+            border-left: 8px solid var(--primary);
+            font-size: clamp(16px, 2.5vw, 24px);
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+        }
+
+        .result-content {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .result-content h3 {
+            color: var(--success);
+            font-size: 24px;
+            margin: 0 0 15px 0;
+            text-align: center;
+        }
+
+        .result-table {
+            width: 100%;
+            max-width: 700px;
+            border-collapse: collapse;
+            background: #0f172a;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
         }
         .result-table th, .result-table td {
             padding: 15px;
@@ -155,58 +294,45 @@
         }
         .result-table th { background: var(--primary); color: #000; }
 
-        /* Adım Bilgi Paneli */
-        #step-panel {
-            width: auto;
-            max-width: 400px;
-            margin: 0;
-            display: contents;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        .instruction-box {
-            background: #1e293b;
-            padding: 2vh;
-            border-radius: 20px;
-            border-left: 8px solid var(--primary);
-            font-size: 1.8vh;
-            grid-column: 1;
-            grid-row: 2;
-        }
-
         .result-box {
             background: #0f172a;
-            padding: 2vh;
+            padding: 20px;
             border-radius: 20px;
             border: 2px dashed #475569;
             color: var(--accent);
-            min-width: 0;
             font-weight: 600;
-            font-size: 1.6vh;
-            grid-column: 1 / -1;
-            grid-row: 3;
+            font-size: clamp(18px, 2.8vw, 26px);
+            margin-top: 15px;
+            line-height: 1.4;
+        }
+
+        .result-box-title {
+            font-size: clamp(16px, 2.5vw, 24px);
+            opacity: 0.7;
+            margin-bottom: 8px;
         }
 
         .nav-buttons {
-            margin-top: 1.5vh;
+            margin-top: auto;
+            padding-top: 15px;
             display: flex;
-            gap: 1vw;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .btn-nav {
             background: #334155;
             color: white;
             border: none;
-            padding: 0.8vh 1vw;
+            padding: 12px 16px;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 1.4vh;
-            flex: 1;
-            min-width: auto;
+            font-size: clamp(12px, 1.8vw, 14px);
+            transition: all 0.3s;
+            font-family: 'Fredoka', sans-serif;
         }
-        .btn-nav.active { background: var(--primary); color: #000; }
+        .btn-nav:hover { background: #475569; transform: translateX(5px); }
+        .btn-nav.active { background: var(--primary); color: #000; font-weight: 600; }
         .btn-nav.finish { background: var(--success); color: #000; }
 
         /* Simülasyon Elemanları */
@@ -252,83 +378,92 @@
             background: rgba(15, 23, 42, 0.8); padding: 2px 10px; border-radius: 10px; white-space: nowrap;
         }
 
-        #step-title {
-            order: unset;
-            margin-bottom: 0;
-            align-self: auto;
-            grid-column: 1 / -1;
-            grid-row: 1;
-        }
-        #main-container {
-            width: 100%;
-            max-width: 100vw;
-            height: auto;
-            min-height: 100vh;
-            padding: 20px;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
+        #instruction-text {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
         }
 
-        /* Sahnenin kendisi */
-        #stage {
-            transform-origin: top center;
-        }
-
-        /* Otomatik ölçekleme */
-        @media (max-width: 1400px) {
-            #stage {
-                width: 85vw;
-                height: auto;
-            }
-            #step-panel {
-                width: 85vw;
-            }
-        }
-
+        /* Responsive tasarım */
         @media (max-width: 1200px) {
-            #stage {
-                width: 80vw;
-                height: auto;
-            }
             #step-panel {
-                width: 80vw;
+                width: clamp(250px, 30vw, 280px);
+                min-width: 250px;
             }
         }
 
         @media (max-width: 992px) {
-            #stage {
-                width: 85vw;
+            #main-container {
                 height: auto;
+                min-height: 100vh;
+            }
+            #content-section {
+                flex-direction: column;
+                overflow-y: auto;
+                padding: 15px;
             }
             #step-panel {
-                width: 85vw;
-                grid-template-columns: 1fr;
+                width: 100%;
+                max-width: 100%;
+                min-width: auto;
+            }
+            #stage {
+                min-height: 400px;
+                height: 60vh;
+            }
+            .nav-buttons {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .btn-nav {
+                flex: 1;
+                min-width: 45%;
             }
         }
 
         @media (max-width: 768px) {
-            #stage {
-                width: 90vw;
-                height: auto;
+            #header-section {
+                padding: 10px;
             }
-            #step-panel {
-                width: 90vw;
-                grid-template-columns: 1fr;
+            #content-section {
+                padding: 10px;
+                gap: 10px;
+            }
+            #stage {
+                min-height: 350px;
+                height: 50vh;
+            }
+            .instruction-box, .result-box {
+                padding: 15px;
+            }
+            .btn-nav {
+                padding: 10px 12px;
             }
         }
 
         @media (max-width: 576px) {
-            #stage {
-                width: 95vw;
-                height: auto;
+            #step-title {
+                font-size: clamp(16px, 4vw, 20px);
             }
-            #step-panel {
-                width: 95vw;
-                grid-template-columns: 1fr;
+            #stage {
+                min-height: 300px;
+                height: 45vh;
+            }
+            .instruction-box, .result-box {
+                padding: 12px;
+            }
+            .nav-buttons {
+                gap: 8px;
+            }
+            .btn-nav {
+                min-width: 100%;
+                padding: 8px 10px;
+            }
+            #evaluation-screen {
+                padding: 20px;
+            }
+            .result-table {
+                font-size: clamp(12px, 3vw, 16px);
             }
         }
     </style>
@@ -349,9 +484,30 @@
 
     <!-- DENEY ALANI -->
     <div id="main-container" style="display: none;">
-        <h2 id="step-title" style="color: var(--primary); font-size: 2.5vh; margin: 0;">Adım 1: Işık Kaynağı Hreketinin Gölgeye Etkisi</h2>
+        <!-- BAŞLIK -->
+        <div id="header-section">
+            <h2 id="step-title">Adım 1: Işık Kaynağı Hareketinin Gölgeye Etkisi</h2>
+        </div>
+
+        <!-- İÇERİK: ADIM PANELİ + DENEY ALANI -->
+        <div id="content-section">
+            <div id="step-panel">
+                <div class="instruction-box">
+                    <div id="instruction-text">Yükleniyor...</div>
+                    <div class="nav-buttons">
+                        <button id="btn1" class="btn-nav active" onclick="setStep(1)">1. Adım</button>
+                        <button id="btn2" class="btn-nav" onclick="setStep(2)">2. Adım</button>
+                        <button id="btn3" class="btn-nav" onclick="setStep(3)">3. Adım</button>
+                        <button id="btn4" class="btn-nav finish" onclick="setStep(4)">SONUÇ 📋</button>
+                    </div>
+                </div>
+                <div class="result-box">
+                    <div class="result-box-title">BİLİMSEL SONUÇ:</div>
+                    <div id="result-text">Harekete geçerek gözlem yap!</div>
+                </div>
+            </div>
         
-        <div id="stage">
+            <div id="stage">
             <!-- SONUÇ EKRANI PANELİ -->
             <div id="evaluation-screen">
                 <h1 style="color: var(--success); margin: 0;">🔬 Deney Sonuç Raporu</h1>
@@ -407,21 +563,6 @@
                 <span class="label">Ekran (Perde)</span>
             </div>
         </div>
-
-        <div id="step-panel">
-            <div class="instruction-box">
-                <div id="instruction-text">Yükleniyor...</div>
-                <div class="nav-buttons">
-                    <button id="btn1" class="btn-nav" onclick="setStep(1)">1. Adım</button>
-                    <button id="btn2" class="btn-nav" onclick="setStep(2)">2. Adım</button>
-                    <button id="btn3" class="btn-nav" onclick="setStep(3)">3. Adım</button>
-                    <button id="btn4" class="btn-nav finish" onclick="setStep(4)">SONUÇ 📋</button>
-                </div>
-            </div>
-            <div class="result-box">
-                <div style="font-size: 14px; opacity: 0.7; margin-bottom: 5px;">BİLİMSEL SONUÇ:</div>
-                <div id="result-text">Harekete geçerek gözlem yap!</div>
-            </div>
         </div>
     </div>
 
@@ -441,6 +582,16 @@
 
         // yüzde tabanlı başlangıç pozisyonları (0..1 arası)
         let state = { lx: 0.08, ox: 0.45, sx: 0.8 };
+
+        function closeResults() {
+            evaluationScreen.classList.remove('show');
+            setStep(1);
+        }
+
+        function closeResults() {
+            evaluationScreen.classList.remove('show');
+            setStep(1);
+        }
 
         const steps = {
             1: {
@@ -488,10 +639,10 @@
             document.getElementById('result-text').innerText = steps[n].result;
 
             if (n === 4) {
-                evaluationScreen.style.display = 'flex';
+                evaluationScreen.classList.add('show');
                 [flashlight, object, screen].forEach(el => el.classList.remove('active-step'));
             } else {
-                evaluationScreen.style.display = 'none';
+                evaluationScreen.classList.remove('show');
                 [flashlight, object, screen].forEach(el => el.classList.remove('active-step'));
                 if(steps[n].target) steps[n].target.classList.add('active-step');
             }
@@ -554,9 +705,9 @@
             const constrainedShadowW = Math.min(shadowW, sW - 10);
             const constrainedShadowH = Math.min(shadowH, sH - 10);
             
-            // gölge perdenin sol kenarına yapıştırılmış olmalı (0 mesafe)
-            const shadowLeft = 0;
-            const shadowTop = Math.max(5, Math.min(sH - constrainedShadowH - 5, (sH - constrainedShadowH) / 2));
+            // gölge perdenin hem yatay hem dikey ortasında
+            const shadowLeft = (sW - constrainedShadowW) / 2; // Yatay ortada
+            const shadowTop = (sH - constrainedShadowH) / 2; // Dikey ortada
             
             shadow.style.left = shadowLeft + "px";
             shadow.style.top = shadowTop + "px";
@@ -578,10 +729,16 @@
         function onStart(e) {
             if (currentStep === 4) return;
             const el = e.target.closest('.draggable');
-            if (el) {
-                isDragging = true;
-                activeEl = el;
+            if (!el) return;
+            
+            // Sadece aktif adımın hedef elementini hareket ettir
+            const stepTarget = steps[currentStep].target;
+            if (stepTarget && el !== stepTarget) {
+                return; // Bu adımda bu element hareket edemez
             }
+            
+            isDragging = true;
+            activeEl = el;
         }
 
         function onMove(e) {
