@@ -207,39 +207,7 @@ input[type="range"] {
           <li>Kalem modunda ışık kaynağından çıkan ışınları ekleyin; perde üzerinde oluşan gölgeyi inceleyin.</li>
         </ul>
       </div>
-      <div class="overlay-illustration">
-        <!-- schematic SVG updated by JS to accurately show rays and shadow -->
-        <svg id="introSVG" viewBox="0 0 260 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="objGrad" x1="0" x2="1">
-              <stop offset="0" stop-color="#f3f4f6" />
-              <stop offset="1" stop-color="#6b7280" />
-            </linearGradient>
-          </defs>
-
-          <rect x="4" y="6" width="252" height="128" rx="8" fill="#f8fdff" stroke="#dff6fb" />
-
-          <!-- screen (position updated by JS) -->
-          <rect id="introScreen" x="212" y="28" width="12" height="84" rx="2" fill="#7fb6d9" stroke="#5b9ac6" />
-          <text id="introScreenLabel" x="218" y="120" font-size="11" text-anchor="middle" fill="#0f172a">Perde</text>
-
-          <!-- light and object (positions updated by JS) -->
-          <circle id="introLight" cx="36" cy="36" r="10" fill="#ffd166" stroke="#ffc107" />
-          <text id="introLightLabel" x="36" y="88" font-size="11" text-anchor="middle" fill="#0f172a">Işık</text>
-
-          <circle id="introObject" cx="120" cy="72" r="18" fill="url(#objGrad)" stroke="#475569" />
-          <text id="introObjectLabel" x="120" y="104" font-size="11" text-anchor="middle" fill="#0f172a">Cisim</text>
-
-          <!-- rays and shadow (placeholders updated by JS) -->
-          <line id="ray1" x1="36" y1="36" x2="200" y2="60" stroke="#000" stroke-opacity="0.14" stroke-width="1.8" stroke-linecap="round" />
-          <line id="ray2" x1="36" y1="36" x2="200" y2="100" stroke="#000" stroke-opacity="0.14" stroke-width="1.8" stroke-linecap="round" />
-
-          <ellipse id="introShadow" cx="218" cy="86" rx="12" ry="20" fill="rgba(0,0,0,0.18)" />
-
-          <!-- geometry helper lines -->
-          <line id="helper1" x1="36" y1="36" x2="120" y2="72" stroke="#0b1220" stroke-opacity="0.06" stroke-width="1" />
-        </svg>
-      </div>
+      
     </div>
 
     <div class="overlay-footer">
