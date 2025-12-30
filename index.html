@@ -89,6 +89,9 @@ body {
 .start-btn{ background: linear-gradient(90deg,var(--accent),var(--primary)); color:#fff; border:none; padding:12px 22px; border-radius:10px; font-weight:700; cursor:pointer; box-shadow:0 10px 26px rgba(5,85,90,0.14); }
 .start-btn:hover{ transform:translateY(-2px); box-shadow:0 14px 32px rgba(5,85,90,0.16); }
 .overlay-footer{ text-align:center; margin-top:14px; }
+.warning-box{ background: linear-gradient(135deg, #fff3cd, #ffeaa7); border-left: 4px solid #f39c12; padding: 12px 16px; border-radius: 8px; margin-top: 16px; display: flex; align-items: flex-start; gap: 10px; }
+.warning-box .warning-icon{ flex-shrink: 0; color: #d68910; margin-top: 2px; }
+.warning-box p{ margin: 0; font-size: 13px; line-height: 1.5; color: #856404; font-weight: 500; }
 
 @keyframes popIn{ from{ transform: translateY(8px) scale(0.98); opacity:0 } to{ transform:none; opacity:1 } }
 .position-controls .pos-control{
@@ -229,6 +232,13 @@ input[type="range"] {
         </ul>
       </div>
       
+    </div>
+
+    <div class="warning-box">
+      <svg class="warning-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p>En iyi deneyim için bu simülasyonu geniş ekranlı bir bilgisayarda açmanızı öneririz. Mobil cihaz desteği şu an için bulunmamaktadır.</p>
     </div>
 
     <div class="overlay-footer">

@@ -65,6 +65,29 @@
         }
         .btn-start:hover { transform: scale(1.1); background: #7dd3fc; }
 
+        .warning-box {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-left: 4px solid #f39c12;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .warning-box .warning-icon {
+            flex-shrink: 0;
+            color: #d68910;
+            margin-top: 2px;
+        }
+        .warning-box p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #856404;
+            font-weight: 500;
+        }
+
         /* Ana Sahne - Storyline Web Object için */
         #main-container {
             width: 100%;
@@ -391,6 +414,12 @@
                 <b>Deneyin Amacı:</b> Işık kaynağı, opak cisim ve ekran arasındaki mesafelerin, oluşan tam gölgenin boyutuna etkisini adım adım keşfetmek.
             </p>
             <p style="opacity: 0.8;">Hazırsan, gözlem yapmaya başlayalım!</p>
+            <div class="warning-box">
+                <svg class="warning-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p>En iyi deneyim için bu simülasyonu geniş ekranlı bir bilgisayarda açmanızı öneririz. Mobil cihaz desteği şu an için bulunmamaktadır.</p>
+            </div>
             <button class="btn-start" onclick="startExperiment()">Hadi Başlayalım! 🚀</button>
         </div>
     </div>
