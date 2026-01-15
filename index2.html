@@ -44,6 +44,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            /* Yazı ve element netliği için */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
 
         /* Scrollbar Gizleme */
@@ -69,15 +73,17 @@
             border-radius: 15px; /* Hafif köşe yumuşatma */
         }
 
-        /* --- LOGO STİLİ --- */
+        /* --- LOGO STİLİ (GÜNCELLENDİ) --- */
         .site-logo {
+            /* Absolute yerine flex item olarak veya daha temiz absolute ile */
             position: absolute;
-            right: 2%;
-            top: 50%;
-            transform: translateY(-50%);
-            height: auto;
-            max-height: 80%;
-            width: 7%;
+            right: 20px; /* Kenardan boşluk */
+            top: 0;
+            bottom: 0;
+            margin: auto; /* Dikey ortalama */
+            height: 80%; /* Header yüksekliğinin %80'i */
+            width: auto; /* En-boy oranını koru */
+            max-width: 150px; /* Aşırı büyümeyi engelle */
             z-index: 20;
             filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
             pointer-events: none;
@@ -99,8 +105,8 @@
         }
 
         .intro-logo {
-            width: 10%;
-            height: auto;
+            height: 80%; /* Yüksekliğe göre ayarla */
+            width: auto; /* Oranı koru */
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
@@ -108,8 +114,7 @@
         #intro-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(4px);
+            background: rgba(255, 255, 255, 0.95); /* Biraz daha opak arka plan netlik için */
             z-index: var(--z-overlay);
             display: flex;
             flex-direction: column;
@@ -213,7 +218,10 @@
             margin: 0;
             line-height: 1;
             text-align: center;
-            padding: 0 12%; /* Logoya yer aç */
+            /* Logoya yer açmak için padding ayarlandı */
+            padding-left: 5%;
+            padding-right: 15%; 
+            width: 100%;
         }
 
         /* İÇERİK ALANI */
