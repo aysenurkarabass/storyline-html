@@ -8,37 +8,19 @@
     <style>
         :root {
             /* --- 5. Sınıf - Soft & Renkli Palet --- */
-            
-            /* Genel Arka Plan: Göz yormayan, açık pastel mavi */
             --bg-body: #E3F2FD; 
-            
-            /* Kartlar ve Paneller: Beyaz ve temiz */
             --bg-card: #FFFFFF;
-            
-            /* Sahne: Deney için koyu ama korkutucu olmayan "Uzay Mavisi" */
-            --bg-stage-gradient-start: #3E51B5; /* İndigo */
-            --bg-stage-gradient-end: #1A237E;   /* Derin Lacivert */
-
-            /* Ana Renk (Başlıklar, Çizgiler): Dost canlısı Mavi */
-            --primary: #4FC3F7; /* Açık Mavi */
-            --primary-text: #0277BD; /* Koyu Mavi (Yazılar için) */
-            
-            /* Butonlar ve Vurgular */
+            --bg-stage-gradient-start: #3E51B5; 
+            --bg-stage-gradient-end: #1A237E;
+            --primary: #4FC3F7; 
+            --primary-text: #0277BD; 
             --btn-color: #29B6F6;
-            --accent: #FFCA28; /* Amber (Güneş Sarısı) */
-            
-            /* Başarı/Sonuç: Yumuşak Yeşil */
+            --accent: #FFCA28; 
             --success: #66BB6A;
-            
-            /* Metin Renkleri (Açık zemin üzerinde koyu yazı) */
-            --text-main: #455A64; /* Koyu Gri-Mavi */
+            --text-main: #455A64; 
             --text-muted: #78909C;
-            --text-light: #FFFFFF; /* Koyu zeminler için beyaz */
-            
-            /* Düzen Değişkenleri */
+            --text-light: #FFFFFF;
             --axis-y: 250px;
-            
-            /* Katman Yönetimi */
             --z-beam: 1;
             --z-screen-obj: 5;
             --z-drag-item: 10;
@@ -50,32 +32,44 @@
         body {
             font-family: 'Fredoka', sans-serif;
             background-color: var(--bg-body);
-            /* Arka plana hafif puantiye deseni ekleyerek eğlence katalım */
             background-image: radial-gradient(#B3E5FC 2px, transparent 2px);
             background-size: 30px 30px;
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
-            overflow: hidden;
+            overflow: hidden; /* Taşmayı engelle */
             user-select: none;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+        }
+
+        /* --- 16:9 ANA KAPSAYICI --- */
+        #app-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            /* 16:9 oranını koru, ekrana sığdır */
+            max-width: 177.78vh; /* 16/9 * 100vh */
+            max-height: 56.25vw; /* 9/16 * 100vw */
+            aspect-ratio: 16/9;
+            margin: auto;
+            background-color: var(--bg-body); /* Boşluklarda zemin rengi */
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1); /* Sahne hissi */
         }
 
         /* --- LOGO STİLİ --- */
         .site-logo {
             position: absolute;
-            right: 25px;
+            right: 2%;
             top: 50%;
             transform: translateY(-50%);
             height: auto;
             max-height: 85%;
-            width: auto;
-            max-width: 110px;
+            width: 8%; /* Oransal genişlik */
             z-index: 20;
             filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
             pointer-events: none;
@@ -87,7 +81,7 @@
             left: 0;
             width: 100%;
             height: auto;
-            padding: 20px;
+            padding: 2%;
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -97,16 +91,15 @@
         }
 
         .intro-logo {
-            width: 140px;
+            width: 12%; /* Oransal genişlik */
             height: auto;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
         /* Giriş Ekranı */
         #intro-overlay {
-            position: fixed;
+            position: absolute; /* Fixed yerine Absolute */
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Buzlu cam efekti ve yarı saydam beyaz arka plan */
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
             z-index: var(--z-overlay);
@@ -121,17 +114,16 @@
 
         .intro-card {
             background: #FFFFFF;
-            padding: 50px;
+            padding: 4%;
             border-radius: 40px;
-            /* Renkli, kalın kenarlık */
             border: 6px solid var(--primary);
-            max-width: 800px;
-            max-height: 90%;
+            max-width: 80%;
+            max-height: 85%;
             overflow: auto;
             box-shadow: 0 20px 50px rgba(79, 195, 247, 0.3);
         }
 
-        /* Buton Stilleri - Şeker gibi */
+        /* Butonlar */
         .btn {
             border: none;
             cursor: pointer;
@@ -147,56 +139,52 @@
         .btn:active { transform: scale(0.95) !important; }
 
         .btn-start {
-            background: #FF7043; /* Canlı Mercan Rengi */
+            background: #FF7043;
             color: white;
-            padding: 18px 60px;
-            font-size: 30px;
+            padding: 1.5% 5%;
+            font-size: clamp(18px, 2.5vw, 30px); /* Responsive font */
             font-weight: 600;
-            border-radius: 50px;
+            border-radius: 60px;
             margin-top: 30px;
-            box-shadow: 0 8px 0 #D84315; /* 3D efekt */
+            box-shadow: 0 0.6vh 0 #D84315;
             margin-bottom: 8px;
         }
         .btn-start:hover { 
             background: #FF8A65; 
             transform: translateY(-4px); 
-            box-shadow: 0 12px 0 #D84315;
+            box-shadow: 0 1vh 0 #D84315;
         }
         .btn-start:active {
             transform: translateY(4px);
-            box-shadow: 0 2px 0 #D84315;
+            box-shadow: 0 0.2vh 0 #D84315;
         }
 
         .warning-box {
-            background: #FFF8E1; /* Çok açık sarı */
+            background: #FFF8E1;
             border-left: 8px solid #FFCA28;
             padding: 20px;
             border-radius: 15px;
             margin-top: 30px;
             display: flex;
             align-items: center;
+            justify-content: center; /* İkon kalktığı için ortala */
             gap: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        .warning-box .warning-icon {
-            flex-shrink: 0;
-            color: #FFB300;
-            width: 32px;
-            height: 32px;
-        }
+        /* İkon kaldırıldığı için stil gereksiz ama temizlik için siliyoruz */
         .warning-box p {
             margin: 0;
-            font-size: 18px;
+            font-size: clamp(14px, 1.5vw, 18px);
             line-height: 1.5;
             color: #795548;
             font-weight: 500;
-            text-align: left;
+            text-align: center; /* Metni ortala */
         }
 
         /* Ana Sahne Yapısı */
         #main-container {
             width: 100%;
-            height: 100vh;
+            height: 100%;
             margin: 0;
             position: relative;
             display: none;
@@ -212,97 +200,46 @@
             background: #FFFFFF;
             padding: 1.5vh 0;
             flex-shrink: 0;
-            height: auto;
+            height: 10%; /* Header yüksekliği sabitlendi */
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             z-index: 20;
-            border-bottom: 5px solid #81D4FA; /* Alt çizgi */
+            border-bottom: 5px solid #81D4FA;
+            box-sizing: border-box;
         }
 
         #step-title {
             color: var(--primary-text);
-            font-size: 3.5vh;
+            font-size: clamp(18px, 3vh, 32px);
             font-weight: 600;
             margin: 0;
             line-height: 1.2;
             text-align: center;
-            padding: 0 120px;
+            padding: 0 10%;
         }
 
         #content-section {
             flex: 1;
             display: flex;
             flex-direction: row;
-            gap: 20px;
-            padding: 20px;
+            gap: 2%; /* Yüzdelik boşluk */
+            padding: 2%;
             box-sizing: border-box;
             align-items: stretch;
             overflow: hidden;
             min-height: 0;
+            height: 90%; /* Kalan yükseklik */
         }
-
-        /* SONUÇ EKRANI */
-        #evaluation-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            /* Sonuç ekranı arka planı: Yarı saydam koyu mavi */
-            background: rgba(26, 35, 126, 0.95);
-            z-index: var(--z-evaluation);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            border-radius: 25px; /* Sahne ile uyumlu köşe */
-        }
-
-        #evaluation-screen.show { display: flex; }
-
-        /* Scrollbar */
-        body::-webkit-scrollbar { width: 12px; }
-        body::-webkit-scrollbar-track { background: #ECEFF1; }
-        body::-webkit-scrollbar-thumb { background: #90A4AE; border-radius: 10px; border: 2px solid #ECEFF1; }
-
-        .result-table {
-            width: 100%;
-            max-width: 800px;
-            border-collapse: separate;
-            border-spacing: 0;
-            background: #FFFFFF; /* Tablo içi beyaz */
-            border-radius: 25px;
-            overflow: hidden;
-            margin: 30px 0;
-            font-size: 18px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            border: 4px solid #FFF;
-        }
-        .result-table th, .result-table td {
-            padding: 18px 25px;
-            border-bottom: 2px solid #F0F0F0;
-            text-align: left;
-            color: var(--text-main);
-        }
-        .result-table th { 
-            background: #29B6F6; 
-            color: white; 
-            font-weight: 600;
-            border: none;
-        }
-        .result-table tr:last-child td { border-bottom: none; }
 
         /* Sol Panel (Kontrol ve Bilgi) */
         #step-panel {
-            width: 300px;
-            min-width: 280px;
-            max-width: 320px;
+            width: 25%; /* Sabit yüzde genişlik */
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 2vh;
             padding: 0;
             box-sizing: border-box;
             flex-shrink: 0;
@@ -310,12 +247,11 @@
 
         .instruction-box {
             background: #FFFFFF;
-            padding: 25px;
+            padding: 2vh 2vw;
             border-radius: 25px;
             border: 3px solid #E1F5FE;
-            /* Sol tarafı renkli çizgiyle vurgula */
             border-left: 10px solid var(--btn-color);
-            font-size: 18px; /* Küçültüldü (Eski: 20px) */
+            font-size: clamp(14px, 1.8vh, 18px);
             line-height: 1.5;
             display: flex;
             flex-direction: column;
@@ -328,19 +264,19 @@
 
         .result-box {
             background: #FFFFFF;
-            padding: 20px;
+            padding: 2vh 2vw;
             border-radius: 25px;
-            border: 4px dashed #FFB74D; /* Turuncu kesik çizgi */
-            color: #F57C00; /* Koyu Turuncu Yazı */
+            border: 4px dashed #FFB74D;
+            color: #F57C00;
             font-weight: 600;
-            font-size: 20px;
+            font-size: clamp(16px, 2vh, 20px);
             margin-top: auto;
             line-height: 1.4;
             box-shadow: 0 5px 15px rgba(255, 224, 178, 0.5);
         }
 
         .result-box-title {
-            font-size: 14px;
+            font-size: clamp(12px, 1.5vh, 14px);
             color: #90A4AE;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -350,49 +286,45 @@
 
         .nav-buttons {
             margin-top: auto;
-            padding-top: 20px;
+            padding-top: 2vh;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 1vh;
         }
 
         .btn-nav {
             background: #ECEFF1;
             color: #546E7A;
-            padding: 14px 20px;
+            padding: 1.5vh 1vw;
             border-radius: 15px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: clamp(14px, 1.8vh, 18px);
             font-weight: 600;
             transition: all 0.2s;
             font-family: 'Fredoka', sans-serif;
             text-align: center;
             border: 2px solid transparent;
         }
-        .btn-nav:hover { 
-            background: #CFD8DC; 
-            transform: scale(1.02);
-        }
+        .btn-nav:hover { background: #CFD8DC; transform: scale(1.02); }
         .btn-nav.active { 
             background: var(--btn-color); 
             color: white; 
             border-color: transparent;
-            box-shadow: 0 6px 15px rgba(41, 182, 246, 0.3);
+            box-shadow: 0 0.5vh 1vh rgba(41, 182, 246, 0.3);
         }
         .btn-nav.finish { 
             background: var(--success); 
             color: white;
-            box-shadow: 0 4px 0 #43A047;
+            box-shadow: 0 0.4vh 0 #43A047;
             margin-bottom: 4px;
         }
-        .btn-nav.finish:hover { background: #4CAF50; transform: translateY(-2px); box-shadow: 0 6px 0 #43A047; }
-        .btn-nav.finish:active { transform: translateY(2px); box-shadow: 0 2px 0 #43A047; }
+        .btn-nav.finish:hover { background: #4CAF50; transform: translateY(-2px); box-shadow: 0 0.6vh 0 #43A047; }
+        .btn-nav.finish:active { transform: translateY(2px); box-shadow: 0 0.2vh 0 #43A047; }
 
         /* Sağ Panel (Deney Sahnesi) */
         #stage {
-            flex: 1;
+            flex: 1; /* Geri kalan alanı doldurur (~73%) */
             height: 100%;
-            /* Uzay/Laboratuvar hissi için derin mavi gradyan */
             background: radial-gradient(circle at bottom, var(--bg-stage-gradient-start) 0%, var(--bg-stage-gradient-end) 100%);
             border: 8px solid #FFFFFF;
             border-radius: 30px;
@@ -402,6 +334,46 @@
             perspective: 1000px;
             min-height: 0;
         }
+
+        /* SONUÇ EKRANI */
+        #evaluation-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(26, 35, 126, 0.95);
+            z-index: var(--z-evaluation);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            border-radius: 22px;
+        }
+
+        #evaluation-screen.show { display: flex; }
+
+        .result-table {
+            width: 90%;
+            max-width: 800px;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #FFFFFF;
+            border-radius: 25px;
+            overflow: hidden;
+            margin: 30px 0;
+            font-size: clamp(14px, 2vh, 18px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border: 4px solid #FFF;
+        }
+        .result-table th, .result-table td {
+            padding: 2vh 2vw;
+            border-bottom: 2px solid #F0F0F0;
+            text-align: left;
+            color: var(--text-main);
+        }
+        .result-table th { background: #29B6F6; color: white; font-weight: 600; border: none; }
+        .result-table tr:last-child td { border-bottom: none; }
 
         /* Simülasyon Elemanları */
         #light-beam-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: var(--z-beam); }
@@ -419,32 +391,28 @@
         .draggable:active { cursor: grabbing; transform: scale(1.1); }
         .draggable:focus-visible { filter: drop-shadow(0 0 15px var(--accent)); }
         
-        .active-step { 
-            /* Aktif öğe etrafında animasyonlu halka */
-            animation: bounce-highlight 2s infinite;
-        }
+        .active-step { animation: bounce-highlight 2s infinite; }
 
         @keyframes bounce-highlight {
             0%, 100% { filter: drop-shadow(0 0 5px #FFF176); transform: translateY(0); }
             50% { filter: drop-shadow(0 0 20px #FFEB3B); transform: translateY(-3px); }
         }
 
-        #flashlight { height: 70px; top: calc(var(--axis-y) - 35px); left: 80px; }
+        #flashlight { height: 14%; /* Yüzdelik yükseklik */ top: 43%; left: 10%; }
         .f-body { width: 65px; height: 36px; background: #78909C; border-radius: 10px 0 0 10px; border: 2px solid #546E7A; }
         .f-head { width: 35px; height: 70px; background: #455A64; border-radius: 8px; border-right: 8px solid #FFEB3B; box-shadow: 0 0 15px #FFEB3B; }
 
         #object {
             width: 70px; height: 70px;
-            /* Top daha parlak ve 3 boyutlu */
             background: radial-gradient(circle at 35% 35%, #69F0AE, #00C853);
             border-radius: 50%;
             border: 3px solid #B9F6CA;
-            top: calc(var(--axis-y) - 35px); left: 450px;
+            top: 43%; left: 45%;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         #screen-container {
-            position: absolute; top: 50px; left: 800px; width: 140px; height: 400px; z-index: var(--z-screen-obj);
+            position: absolute; top: 10%; left: 80%; width: 15%; height: 80%; z-index: var(--z-screen-obj);
             perspective: 800px;
         }
         #screen-surface {
@@ -464,10 +432,9 @@
         }
 
         .label {
-            position: absolute; bottom: -55px; left: 50%; transform: translateX(-50%);
-            font-size: 15px; font-weight: 700; color: #FFFFFF; text-transform: uppercase;
-            /* Etiketler daha belirgin */
-            background: #546E7A; padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+            position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
+            font-size: 14px; font-weight: 700; color: #FFFFFF; text-transform: uppercase;
+            background: #546E7A; padding: 6px 12px; border-radius: 20px; white-space: nowrap;
             pointer-events: none;
             letter-spacing: 0.5px;
             box-shadow: 0 3px 6px rgba(0,0,0,0.2);
@@ -477,7 +444,7 @@
             flex: 1;
             overflow-y: auto;
             margin-bottom: 15px;
-            font-size: 2.2vh; /* Küçültüldü (Eski: 2.8vh) */
+            font-size: 2.2vh;
             color: var(--text-main);
         }
 
@@ -487,124 +454,125 @@
 </head>
 <body>
 
-    <!-- GİRİŞ EKRANI -->
-    <section id="intro-overlay">
-        <!-- LOGO HEADER İÇİNDE -->
-        <div class="intro-header">
-            <img src="e12_logo_kare (1).png" alt="Logo" class="intro-logo">
-        </div>
+    <!-- 16:9 SABİT KAPSAYICI -->
+    <div id="app-container">
 
-        <div class="intro-card">
-            <h1 class="text-primary mb-3" style="color: var(--primary-text); margin-bottom: 25px; font-size: 42px;">Tam Gölge Laboratuvarına Hoş Geldin!</h1>
-            <p style="font-size: 22px; line-height: 1.6; color: var(--text-main);">
-                <b>Deneyin Amacı:</b> Işık kaynağı, opak cisim ve ekran arasındaki mesafelerin, oluşan tam gölgenin boyutuna etkisini adım adım keşfedelim.
-            </p>
-            <p style="opacity: 0.8; font-size: 20px; margin-top: 15px; color: var(--text-muted);">Hazırsan, gözlem yapmaya başlayalım!</p>
-            
-            <div class="warning-box">
-                <svg class="warning-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <p>En iyi deneyim için bu simülasyonu geniş ekranlı bir bilgisayarda açmanı öneririz.</p>
+        <!-- GİRİŞ EKRANI -->
+        <section id="intro-overlay">
+            <!-- LOGO HEADER İÇİNDE -->
+            <div class="intro-header">
+                <img src="e12_logo_kare (1).png" alt="Logo" class="intro-logo">
             </div>
 
-            <button id="btn-start-exp" class="btn btn-start">Hadi Başlayalım!</button>
-        </div>
-    </section>
-
-    <!-- DENEY ALANI -->
-    <main id="main-container">
-        <!-- BAŞLIK -->
-        <header id="header-section">
-            <h2 id="step-title">Adım 1: Işık Kaynağı Hareketinin Gölgeye Etkisi</h2>
-            <!-- LOGO -->
-            <img src="e12_logo_kare (1).png" alt="Logo" class="site-logo">
-        </header>
-
-        <!-- İÇERİK -->
-        <section id="content-section">
-            <aside id="step-panel">
-                <div class="instruction-box">
-                    <div id="instruction-text">Yükleniyor...</div>
-                    <nav class="nav-buttons" aria-label="Adım Navigasyonu">
-                        <button id="btn1" class="btn btn-nav active" data-step="1">1. Adım</button>
-                        <button id="btn2" class="btn btn-nav" data-step="2">2. Adım</button>
-                        <button id="btn3" class="btn btn-nav" data-step="3">3. Adım</button>
-                        <button id="btn4" class="btn btn-nav finish" data-step="4">SONUÇ</button>
-                    </nav>
-                </div>
-                <div class="result-box">
-                    <div class="result-box-title">BİLİMSEL SONUÇ:</div>
-                    <div id="result-text">Harekete geçerek gözlem yap!</div>
-                </div>
-            </aside>
-        
-            <div id="stage">
-                <!-- SONUÇ EKRANI PANELİ -->
-                <section id="evaluation-screen">
-                    <h1 style="color: #4FC3F7; margin: 0; font-size: 36px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Deney Sonuç Raporu</h1>
-                    <table class="result-table">
-                        <thead>
-                            <tr>
-                                <th>Değişken</th>
-                                <th>Yapılan İşlem</th>
-                                <th>Gölge Boyutu Değişimi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Işık Kaynağı</td>
-                                <td>Cisme Yaklaşırsa</td>
-                                <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
-                            </tr>
-                            <tr>
-                                <td>Cisim</td>
-                                <td>Işık Kaynağına Yaklaşırsa</td>
-                                <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
-                            </tr>
-                            <tr>
-                                <td>Ekran (Perde)</td>
-                                <td>Cisimden Uzaklaşırsa</td>
-                                <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p style="text-align: center; max-width: 700px; font-size: 20px; color: #E3F2FD; line-height: 1.6;">Işık doğrusal yayıldığı için engelin (cisim) ışığa olan uzaklığı veya ekranın konumu gölgenin boyutunu doğrudan etkiler.</p>
-                    <button id="btn-restart" class="btn btn-start" style="padding: 12px 40px; font-size: 20px; margin-top: 25px; background: #66BB6A; box-shadow: 0 6px 0 #2E7D32;">Deneyi Tekrarla</button>
-                </section>
-
-                <svg id="light-beam-svg">
-                    <defs>
-                        <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <!-- Işık hüzmesi rengi sarı, yumuşak geçişli -->
-                            <stop offset="0%" style="stop-color:rgba(255, 235, 59, 0.4)" />
-                            <stop offset="100%" style="stop-color:rgba(255, 235, 59, 0)" />
-                        </linearGradient>
-                    </defs>
-                    <polygon id="beam-path" fill="url(#beamGrad)" />
-                </svg>
-
-                <div id="flashlight" class="draggable" tabindex="0" role="slider" aria-label="Işık Kaynağı" aria-valuemin="0" aria-valuemax="100">
-                    <div class="f-body"></div><div class="f-head"></div>
-                    <span class="label">Işık Kaynağı</span>
+            <div class="intro-card">
+                <h1 class="text-primary mb-3" style="color: var(--primary-text); margin-bottom: 25px; font-size: clamp(24px, 4vh, 42px);">Tam Gölge Laboratuvarına Hoş Geldin!</h1>
+                <p style="font-size: clamp(16px, 2.5vh, 22px); line-height: 1.6; color: var(--text-main);">
+                    <b>Deneyin Amacı:</b> Işık kaynağı, opak cisim ve ekran arasındaki mesafelerin, oluşan tam gölgenin boyutuna etkisini adım adım keşfedelim.
+                </p>
+                <p style="opacity: 0.8; font-size: clamp(14px, 2vh, 20px); margin-top: 15px; color: var(--text-muted);">Hazırsan, gözlem yapmaya başlayalım!</p>
+                
+                <div class="warning-box">
+                    <!-- İKON KALDIRILDI -->
+                    <p>En iyi deneyim için bu simülasyonu geniş ekranlı bir bilgisayarda açmanı öneririz.</p>
                 </div>
 
-                <div id="object" class="draggable" tabindex="0" role="slider" aria-label="Opak Cisim">
-                    <span class="label">Opak Cisim</span>
-                </div>
-
-                <div id="screen-container" class="draggable" tabindex="0" role="slider" aria-label="Ekran">
-                    <div id="screen-surface">
-                        <div id="shadow"></div>
-                    </div>
-                    <span class="label">Ekran (Perde)</span>
-                </div>
+                <button id="btn-start-exp" class="btn btn-start">Hadi Başlayalım!</button>
             </div>
         </section>
-    </main>
+
+        <!-- DENEY ALANI -->
+        <main id="main-container">
+            <!-- BAŞLIK -->
+            <header id="header-section">
+                <h2 id="step-title">Adım 1: Işık Kaynağı Hareketinin Gölgeye Etkisi</h2>
+                <!-- LOGO -->
+                <img src="e12_logo_kare (1).png" alt="Logo" class="site-logo">
+            </header>
+
+            <!-- İÇERİK -->
+            <section id="content-section">
+                <aside id="step-panel">
+                    <div class="instruction-box">
+                        <div id="instruction-text">Yükleniyor...</div>
+                        <nav class="nav-buttons" aria-label="Adım Navigasyonu">
+                            <button id="btn1" class="btn btn-nav active" data-step="1">1. Adım</button>
+                            <button id="btn2" class="btn btn-nav" data-step="2">2. Adım</button>
+                            <button id="btn3" class="btn btn-nav" data-step="3">3. Adım</button>
+                            <button id="btn4" class="btn btn-nav finish" data-step="4">SONUÇ</button>
+                        </nav>
+                    </div>
+                    <div class="result-box">
+                        <div class="result-box-title">BİLİMSEL SONUÇ:</div>
+                        <div id="result-text">Harekete geçerek gözlem yap!</div>
+                    </div>
+                </aside>
+            
+                <div id="stage">
+                    <!-- SONUÇ EKRANI PANELİ -->
+                    <section id="evaluation-screen">
+                        <h1 style="color: #4FC3F7; margin: 0; font-size: 36px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Deney Sonuç Raporu</h1>
+                        <table class="result-table">
+                            <thead>
+                                <tr>
+                                    <th>Değişken</th>
+                                    <th>Yapılan İşlem</th>
+                                    <th>Gölge Boyutu Değişimi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Işık Kaynağı</td>
+                                    <td>Cisme Yaklaşırsa</td>
+                                    <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
+                                </tr>
+                                <tr>
+                                    <td>Cisim</td>
+                                    <td>Işık Kaynağına Yaklaşırsa</td>
+                                    <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
+                                </tr>
+                                <tr>
+                                    <td>Ekran (Perde)</td>
+                                    <td>Cisimden Uzaklaşırsa</td>
+                                    <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="text-align: center; max-width: 700px; font-size: 20px; color: #E3F2FD; line-height: 1.6;">Işık doğrusal yayıldığı için engelin (cisim) ışığa olan uzaklığı veya ekranın konumu gölgenin boyutunu doğrudan etkiler.</p>
+                        <button id="btn-restart" class="btn btn-start" style="padding: 12px 40px; font-size: 20px; margin-top: 25px; background: #66BB6A; box-shadow: 0 6px 0 #2E7D32;">Deneyi Tekrarla</button>
+                    </section>
+
+                    <svg id="light-beam-svg">
+                        <defs>
+                            <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:rgba(255, 235, 59, 0.4)" />
+                                <stop offset="100%" style="stop-color:rgba(255, 235, 59, 0)" />
+                            </linearGradient>
+                        </defs>
+                        <polygon id="beam-path" fill="url(#beamGrad)" />
+                    </svg>
+
+                    <div id="flashlight" class="draggable" tabindex="0" role="slider" aria-label="Işık Kaynağı" aria-valuemin="0" aria-valuemax="100">
+                        <div class="f-body"></div><div class="f-head"></div>
+                        <span class="label">Işık Kaynağı</span>
+                    </div>
+
+                    <div id="object" class="draggable" tabindex="0" role="slider" aria-label="Opak Cisim">
+                        <span class="label">Opak Cisim</span>
+                    </div>
+
+                    <div id="screen-container" class="draggable" tabindex="0" role="slider" aria-label="Ekran">
+                        <div id="screen-surface">
+                            <div id="shadow"></div>
+                        </div>
+                        <span class="label">Ekran (Perde)</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    
+    </div> <!-- app-container sonu -->
 
     <script>
-        // DOM Elementleri
         const ui = {
             introOverlay: document.getElementById('intro-overlay'),
             mainContainer: document.getElementById('main-container'),
@@ -627,7 +595,6 @@
         let isDragging = false;
         let activeEl = null;
 
-        // yüzde tabanlı başlangıç pozisyonları (0..1 arası)
         let state = { lx: 0.08, ox: 0.45, sx: 0.8 };
 
         const steps = {
@@ -657,8 +624,6 @@
             }
         };
 
-        // --- Event Listeners ---
-        
         ui.btnStart.addEventListener('click', startExperiment);
         ui.btnRestart.addEventListener('click', () => location.reload());
 
@@ -679,8 +644,6 @@
         window.addEventListener('resize', updateScene);
         window.addEventListener('load', updateScene);
 
-        // --- Fonksiyonlar ---
-
         function startExperiment() {
             ui.introOverlay.style.display = 'none';
             ui.mainContainer.style.display = 'flex';
@@ -691,7 +654,6 @@
         function setStep(n) {
             currentStep = n;
             ui.navButtons.forEach(b => b.classList.remove('active'));
-            
             const activeBtn = document.querySelector(`.btn-nav[data-step="${n}"]`);
             if (activeBtn) activeBtn.classList.add('active');
             
@@ -710,7 +672,6 @@
                     steps[n].target.focus();
                 }
             }
-            
             updateScene();
         }
 
