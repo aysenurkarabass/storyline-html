@@ -3,19 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tam Gölge Laboratuvarı - Adım Adım Deney</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <title>Tam Gölge Laboratuvarı - Eğlenceli Deney</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Renk Paleti */
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --primary: #38bdf8;
-            --primary-dark: #0284c7;
-            --accent: #fde047;
-            --success: #4ade80;
-            --text-muted: #94a3b8;
+            /* --- 5. Sınıf - Soft & Renkli Palet --- */
             
+            /* Genel Arka Plan: Göz yormayan, açık pastel mavi */
+            --bg-body: #E3F2FD; 
+            
+            /* Kartlar ve Paneller: Beyaz ve temiz */
+            --bg-card: #FFFFFF;
+            
+            /* Sahne: Deney için koyu ama korkutucu olmayan "Uzay Mavisi" */
+            --bg-stage-gradient-start: #3E51B5; /* İndigo */
+            --bg-stage-gradient-end: #1A237E;   /* Derin Lacivert */
+
+            /* Ana Renk (Başlıklar, Çizgiler): Dost canlısı Mavi */
+            --primary: #4FC3F7; /* Açık Mavi */
+            --primary-text: #0277BD; /* Koyu Mavi (Yazılar için) */
+            
+            /* Butonlar ve Vurgular */
+            --btn-color: #29B6F6;
+            --accent: #FFCA28; /* Amber (Güneş Sarısı) */
+            
+            /* Başarı/Sonuç: Yumuşak Yeşil */
+            --success: #66BB6A;
+            
+            /* Metin Renkleri (Açık zemin üzerinde koyu yazı) */
+            --text-main: #455A64; /* Koyu Gri-Mavi */
+            --text-muted: #78909C;
+            --text-light: #FFFFFF; /* Koyu zeminler için beyaz */
+            
+            /* Düzen Değişkenleri */
             --axis-y: 250px;
             
             /* Katman Yönetimi */
@@ -29,8 +49,11 @@
 
         body {
             font-family: 'Fredoka', sans-serif;
-            background-color: var(--bg-dark);
-            color: white;
+            background-color: var(--bg-body);
+            /* Arka plana hafif puantiye deseni ekleyerek eğlence katalım */
+            background-image: radial-gradient(#B3E5FC 2px, transparent 2px);
+            background-size: 30px 30px;
+            color: var(--text-main);
             margin: 0;
             padding: 0;
             width: 100%;
@@ -43,37 +66,49 @@
             justify-content: center;
         }
 
-        /* --- ANA SAHNE LOGO STİLİ --- */
+        /* --- LOGO STİLİ --- */
         .site-logo {
-            position: absolute; /* Header içine göre konumlanır */
-            right: 20px;
+            position: absolute;
+            right: 25px;
             top: 50%;
-            transform: translateY(-50%); /* Dikey ortalama */
+            transform: translateY(-50%);
             height: auto;
-            max-height: 80%; /* Header dışına taşmasını engeller */
+            max-height: 85%;
             width: auto;
-            max-width: 80px;
+            max-width: 110px;
             z-index: 20;
-            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
             pointer-events: none;
         }
 
-        /* --- GİRİŞ EKRANI LOGO STİLİ --- */
-        .intro-logo {
+        .intro-header {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 100px; /* Giriş ekranında biraz daha büyük */
+            top: 0;
+            left: 0;
+            width: 100%;
             height: auto;
-            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+            padding: 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            box-sizing: border-box;
+            z-index: 102;
             pointer-events: none;
+        }
+
+        .intro-logo {
+            width: 140px;
+            height: auto;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
         /* Giriş Ekranı */
         #intro-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.95);
+            /* Buzlu cam efekti ve yarı saydam beyaz arka plan */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
             z-index: var(--z-overlay);
             display: flex;
             flex-direction: column;
@@ -85,59 +120,77 @@
         }
 
         .intro-card {
-            background: var(--bg-card);
-            padding: 30px;
-            border-radius: 20px;
-            border: 3px solid var(--primary);
-            max-width: 90%;
-            max-height: 80%;
+            background: #FFFFFF;
+            padding: 50px;
+            border-radius: 40px;
+            /* Renkli, kalın kenarlık */
+            border: 6px solid var(--primary);
+            max-width: 800px;
+            max-height: 90%;
             overflow: auto;
-            box-shadow: 0 0 50px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 20px 50px rgba(79, 195, 247, 0.3);
         }
 
+        /* Buton Stilleri - Şeker gibi */
         .btn {
             border: none;
             cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             font-family: inherit;
+            position: relative;
+            overflow: hidden;
         }
         .btn:focus-visible {
-            outline: 3px solid var(--accent);
+            outline: 4px solid var(--accent);
             outline-offset: 2px;
         }
+        .btn:active { transform: scale(0.95) !important; }
 
         .btn-start {
-            background: var(--primary);
-            color: var(--bg-dark);
-            padding: 15px 40px;
-            font-size: 33px;
+            background: #FF7043; /* Canlı Mercan Rengi */
+            color: white;
+            padding: 18px 60px;
+            font-size: 30px;
             font-weight: 600;
             border-radius: 50px;
-            margin-top: 25px;
+            margin-top: 30px;
+            box-shadow: 0 8px 0 #D84315; /* 3D efekt */
+            margin-bottom: 8px;
         }
-        .btn-start:hover { transform: scale(1.05); background: #7dd3fc; }
+        .btn-start:hover { 
+            background: #FF8A65; 
+            transform: translateY(-4px); 
+            box-shadow: 0 12px 0 #D84315;
+        }
+        .btn-start:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #D84315;
+        }
 
         .warning-box {
-            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-            border-left: 4px solid #f39c12;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-top: 20px;
+            background: #FFF8E1; /* Çok açık sarı */
+            border-left: 8px solid #FFCA28;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
             display: flex;
-            align-items: flex-start;
-            gap: 10px;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         .warning-box .warning-icon {
             flex-shrink: 0;
-            color: #d68910;
-            margin-top: 2px;
+            color: #FFB300;
+            width: 32px;
+            height: 32px;
         }
         .warning-box p {
             margin: 0;
-            font-size: 13px;
+            font-size: 18px;
             line-height: 1.5;
-            color: #856404;
+            color: #795548;
             font-weight: 500;
+            text-align: left;
         }
 
         /* Ana Sahne Yapısı */
@@ -146,7 +199,7 @@
             height: 100vh;
             margin: 0;
             position: relative;
-            display: none; /* JS ile flex yapılacak */
+            display: none;
             flex-direction: column;
             gap: 0;
             padding: 0;
@@ -156,32 +209,35 @@
 
         /* HEADER */
         #header-section {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-bottom: 3px solid var(--primary);
-            padding: 1.5vh 0; /* Padding biraz artırıldı logo sığsın diye */
+            background: #FFFFFF;
+            padding: 1.5vh 0;
             flex-shrink: 0;
             height: auto;
-            position: relative; /* Logo için referans */
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            z-index: 20;
+            border-bottom: 5px solid #81D4FA; /* Alt çizgi */
         }
 
         #step-title {
-            color: var(--primary);
-            font-size: 3vh;
+            color: var(--primary-text);
+            font-size: 3.5vh;
+            font-weight: 600;
             margin: 0;
             line-height: 1.2;
             text-align: center;
-            padding: 0 100px; /* Logo metnin üzerine binmesin diye sağ/sol boşluk */
+            padding: 0 120px;
         }
 
         #content-section {
             flex: 1;
             display: flex;
             flex-direction: row;
-            gap: 0.7%;
-            padding: 0.7%;
+            gap: 20px;
+            padding: 20px;
             box-sizing: border-box;
             align-items: stretch;
             overflow: hidden;
@@ -192,7 +248,8 @@
         #evaluation-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(30, 41, 59, 0.98);
+            /* Sonuç ekranı arka planı: Yarı saydam koyu mavi */
+            background: rgba(26, 35, 126, 0.95);
             z-index: var(--z-evaluation);
             display: none;
             flex-direction: column;
@@ -201,111 +258,147 @@
             padding: 40px;
             box-sizing: border-box;
             overflow-y: auto;
+            border-radius: 25px; /* Sahne ile uyumlu köşe */
         }
 
         #evaluation-screen.show { display: flex; }
 
-        /* Scrollbar stilleri */
+        /* Scrollbar */
         body::-webkit-scrollbar { width: 12px; }
-        body::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 10px; }
-        body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 10px; border: 3px solid transparent; background-clip: padding-box; }
+        body::-webkit-scrollbar-track { background: #ECEFF1; }
+        body::-webkit-scrollbar-thumb { background: #90A4AE; border-radius: 10px; border: 2px solid #ECEFF1; }
 
         .result-table {
             width: 100%;
-            max-width: 700px;
-            border-collapse: collapse;
-            background: var(--bg-dark);
-            border-radius: 15px;
+            max-width: 800px;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #FFFFFF; /* Tablo içi beyaz */
+            border-radius: 25px;
             overflow: hidden;
-            margin: 20px 0;
-            font-size: clamp(9px, 1.8vw, 14px);
+            margin: 30px 0;
+            font-size: 18px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border: 4px solid #FFF;
         }
         .result-table th, .result-table td {
-            padding: clamp(10px, 1.5vw, 15px);
-            border: 1px solid #334155;
+            padding: 18px 25px;
+            border-bottom: 2px solid #F0F0F0;
             text-align: left;
+            color: var(--text-main);
         }
-        .result-table th { background: var(--primary); color: #000; }
+        .result-table th { 
+            background: #29B6F6; 
+            color: white; 
+            font-weight: 600;
+            border: none;
+        }
+        .result-table tr:last-child td { border-bottom: none; }
 
-        /* Adım Bilgi Paneli (Sol) */
+        /* Sol Panel (Kontrol ve Bilgi) */
         #step-panel {
-            width: 20%;
-            min-width: 20%;
-            max-width: 20%;
+            width: 300px;
+            min-width: 280px;
+            max-width: 320px;
             display: flex;
             flex-direction: column;
-            gap: 0.7vh;
+            gap: 20px;
             padding: 0;
             box-sizing: border-box;
             flex-shrink: 0;
         }
 
         .instruction-box {
-            background: var(--bg-card);
-            padding: 0.9vh 0.8vw;
-            border-radius: 12px;
-            border-left: 5px solid var(--primary);
-            font-size: 2.4vh;
+            background: #FFFFFF;
+            padding: 25px;
+            border-radius: 25px;
+            border: 3px solid #E1F5FE;
+            /* Sol tarafı renkli çizgiyle vurgula */
+            border-left: 10px solid var(--btn-color);
+            font-size: 18px; /* Küçültüldü (Eski: 20px) */
+            line-height: 1.5;
             display: flex;
             flex-direction: column;
             flex: 1;
             min-height: 0;
             overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(179, 229, 252, 0.4);
+            color: var(--text-main);
         }
 
         .result-box {
-            background: var(--bg-dark);
-            padding: 1.2vh 1vw;
-            border-radius: 12px;
-            border: 2px dashed #475569;
-            color: var(--accent);
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 25px;
+            border: 4px dashed #FFB74D; /* Turuncu kesik çizgi */
+            color: #F57C00; /* Koyu Turuncu Yazı */
             font-weight: 600;
-            font-size: 2.9vh;
+            font-size: 20px;
             margin-top: auto;
-            line-height: 1.3;
+            line-height: 1.4;
+            box-shadow: 0 5px 15px rgba(255, 224, 178, 0.5);
         }
 
         .result-box-title {
-            font-size: 2.3vh;
-            opacity: 0.7;
-            margin-bottom: 0.5vh;
+            font-size: 14px;
+            color: #90A4AE;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .nav-buttons {
             margin-top: auto;
-            padding-top: 1vh;
+            padding-top: 20px;
             display: flex;
             flex-direction: column;
-            gap: 0.7vh;
+            gap: 12px;
         }
 
         .btn-nav {
-            background: #334155;
-            color: white;
-            padding: 1vh 0.8vw;
-            border-radius: 8px;
+            background: #ECEFF1;
+            color: #546E7A;
+            padding: 14px 20px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 2.4vh;
-            transition: all 0.3s;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.2s;
             font-family: 'Fredoka', sans-serif;
-            white-space: nowrap;
             text-align: center;
+            border: 2px solid transparent;
         }
-        .btn-nav:hover { background: #475569; transform: translateX(5px); }
-        .btn-nav.active { background: var(--primary); color: #000; font-weight: 600; }
-        .btn-nav.finish { background: var(--success); color: #000; }
+        .btn-nav:hover { 
+            background: #CFD8DC; 
+            transform: scale(1.02);
+        }
+        .btn-nav.active { 
+            background: var(--btn-color); 
+            color: white; 
+            border-color: transparent;
+            box-shadow: 0 6px 15px rgba(41, 182, 246, 0.3);
+        }
+        .btn-nav.finish { 
+            background: var(--success); 
+            color: white;
+            box-shadow: 0 4px 0 #43A047;
+            margin-bottom: 4px;
+        }
+        .btn-nav.finish:hover { background: #4CAF50; transform: translateY(-2px); box-shadow: 0 6px 0 #43A047; }
+        .btn-nav.finish:active { transform: translateY(2px); box-shadow: 0 2px 0 #43A047; }
 
-        /* Deney Alanı (Sağ) */
+        /* Sağ Panel (Deney Sahnesi) */
         #stage {
             flex: 1;
-            width: 74%;
             height: 100%;
-            background: linear-gradient(to bottom, #1e293b 0%, #0f172a 75%, #4527a0 75%, #311b92 100%);
-            border: 4px solid #334155;
-            border-radius: 20px;
+            /* Uzay/Laboratuvar hissi için derin mavi gradyan */
+            background: radial-gradient(circle at bottom, var(--bg-stage-gradient-start) 0%, var(--bg-stage-gradient-end) 100%);
+            border: 8px solid #FFFFFF;
+            border-radius: 30px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(62, 81, 181, 0.2);
             perspective: 1000px;
             min-height: 0;
         }
@@ -320,22 +413,34 @@
             display: flex; 
             align-items: center; 
             justify-content: center;
-            outline: none; /* Focus ring'i özel yapacağız */
+            outline: none; 
+            transition: transform 0.1s;
         }
-        .draggable:active { cursor: grabbing; }
-        .draggable:focus-visible { filter: drop-shadow(0 0 10px var(--accent)); }
+        .draggable:active { cursor: grabbing; transform: scale(1.1); }
+        .draggable:focus-visible { filter: drop-shadow(0 0 15px var(--accent)); }
         
-        .active-step { outline: 4px solid var(--accent); outline-offset: 10px; border-radius: 10px; }
+        .active-step { 
+            /* Aktif öğe etrafında animasyonlu halka */
+            animation: bounce-highlight 2s infinite;
+        }
 
-        #flashlight { height: 60px; top: calc(var(--axis-y) - 30px); left: 80px; }
-        .f-body { width: 50px; height: 30px; background: #475569; border-radius: 6px 0 0 6px; }
-        .f-head { width: 25px; height: 60px; background: #1e293b; border-radius: 4px; border-right: 4px solid #fde047; }
+        @keyframes bounce-highlight {
+            0%, 100% { filter: drop-shadow(0 0 5px #FFF176); transform: translateY(0); }
+            50% { filter: drop-shadow(0 0 20px #FFEB3B); transform: translateY(-3px); }
+        }
+
+        #flashlight { height: 70px; top: calc(var(--axis-y) - 35px); left: 80px; }
+        .f-body { width: 65px; height: 36px; background: #78909C; border-radius: 10px 0 0 10px; border: 2px solid #546E7A; }
+        .f-head { width: 35px; height: 70px; background: #455A64; border-radius: 8px; border-right: 8px solid #FFEB3B; box-shadow: 0 0 15px #FFEB3B; }
 
         #object {
-            width: 60px; height: 60px;
-            background: radial-gradient(circle at 30% 30%, #4ade80, #166534);
+            width: 70px; height: 70px;
+            /* Top daha parlak ve 3 boyutlu */
+            background: radial-gradient(circle at 35% 35%, #69F0AE, #00C853);
             border-radius: 50%;
-            top: calc(var(--axis-y) - 30px); left: 450px;
+            border: 3px solid #B9F6CA;
+            top: calc(var(--axis-y) - 35px); left: 450px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         #screen-container {
@@ -343,32 +448,37 @@
             perspective: 800px;
         }
         #screen-surface {
-            width: 100%; height: 100%; background: #fff; border: 6px solid #1e1b4b;
-            border-radius: 4px; position: relative; overflow: hidden;
-            transform: rotateY(-30deg); transform-origin: center right;
-            box-shadow: -10px 10px 30px rgba(0,0,0,0.3);
+            width: 100%; height: 100%; background: #F5F5F5; border: 8px solid #37474F;
+            border-radius: 12px; position: relative; overflow: hidden;
+            transform: rotateY(-20deg);
+            transform-origin: center right;
+            box-shadow: -15px 15px 30px rgba(0,0,0,0.3);
         }
 
         #shadow { 
             position: absolute;
-            background: rgba(0,0,0,0.96); 
+            background: rgba(0,0,0,0.85); 
             border-radius: 50%; 
-            filter: blur(2px);
+            filter: blur(5px);
             transition: width 0.1s, height 0.1s, left 0.1s, top 0.1s;
         }
 
         .label {
-            position: absolute; bottom: -45px; left: 50%; transform: translateX(-50%);
-            font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;
-            background: rgba(15, 23, 42, 0.8); padding: 2px 10px; border-radius: 10px; white-space: nowrap;
+            position: absolute; bottom: -55px; left: 50%; transform: translateX(-50%);
+            font-size: 15px; font-weight: 700; color: #FFFFFF; text-transform: uppercase;
+            /* Etiketler daha belirgin */
+            background: #546E7A; padding: 6px 14px; border-radius: 20px; white-space: nowrap;
             pointer-events: none;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
         }
 
         #instruction-text {
             flex: 1;
             overflow-y: auto;
             margin-bottom: 15px;
-            font-size: 2.7vh;
+            font-size: 2.2vh; /* Küçültüldü (Eski: 2.8vh) */
+            color: var(--text-main);
         }
 
         /* Utility */
@@ -379,21 +489,23 @@
 
     <!-- GİRİŞ EKRANI -->
     <section id="intro-overlay">
-        <!-- LOGO (GİRİŞ EKRANI İÇİN) -->
-        <img src="e12_logo_kare (1).png" alt="Logo" class="intro-logo">
+        <!-- LOGO HEADER İÇİNDE -->
+        <div class="intro-header">
+            <img src="e12_logo_kare (1).png" alt="Logo" class="intro-logo">
+        </div>
 
         <div class="intro-card">
-            <h1 class="text-primary mb-3" style="color: var(--primary); margin-bottom: 15px;">Tam Gölge Laboratuvarına Hoş Geldin!</h1>
-            <p style="font-size: 18px; line-height: 1.6;">
-                <b>Deneyin Amacı:</b> Işık kaynağı, opak cisim ve ekran arasındaki mesafelerin, oluşan tam gölgenin boyutuna etkisini adım adım keşfetmek.
+            <h1 class="text-primary mb-3" style="color: var(--primary-text); margin-bottom: 25px; font-size: 42px;">Tam Gölge Laboratuvarına Hoş Geldin!</h1>
+            <p style="font-size: 22px; line-height: 1.6; color: var(--text-main);">
+                <b>Deneyin Amacı:</b> Işık kaynağı, opak cisim ve ekran arasındaki mesafelerin, oluşan tam gölgenin boyutuna etkisini adım adım keşfedelim.
             </p>
-            <p style="opacity: 0.8;">Hazırsan, gözlem yapmaya başlayalım!</p>
+            <p style="opacity: 0.8; font-size: 20px; margin-top: 15px; color: var(--text-muted);">Hazırsan, gözlem yapmaya başlayalım!</p>
             
             <div class="warning-box">
                 <svg class="warning-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <p>En iyi deneyim için bu simülasyonu geniş ekranlı bir bilgisayarda açmanızı öneririz. Mobil cihaz desteği şu an için bulunmamaktadır.</p>
+                <p>En iyi deneyim için bu simülasyonu geniş ekranlı bir bilgisayarda açmanı öneririz.</p>
             </div>
 
             <button id="btn-start-exp" class="btn btn-start">Hadi Başlayalım!</button>
@@ -405,11 +517,11 @@
         <!-- BAŞLIK -->
         <header id="header-section">
             <h2 id="step-title">Adım 1: Işık Kaynağı Hareketinin Gölgeye Etkisi</h2>
-            <!-- LOGO (DENEY EKRANI İÇİN) -->
+            <!-- LOGO -->
             <img src="e12_logo_kare (1).png" alt="Logo" class="site-logo">
         </header>
 
-        <!-- İÇERİK: ADIM PANELİ + DENEY ALANI -->
+        <!-- İÇERİK -->
         <section id="content-section">
             <aside id="step-panel">
                 <div class="instruction-box">
@@ -430,7 +542,7 @@
             <div id="stage">
                 <!-- SONUÇ EKRANI PANELİ -->
                 <section id="evaluation-screen">
-                    <h1 style="color: var(--success); margin: 0;">🔬 Deney Sonuç Raporu</h1>
+                    <h1 style="color: #4FC3F7; margin: 0; font-size: 36px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Deney Sonuç Raporu</h1>
                     <table class="result-table">
                         <thead>
                             <tr>
@@ -443,29 +555,30 @@
                             <tr>
                                 <td>Işık Kaynağı</td>
                                 <td>Cisme Yaklaşırsa</td>
-                                <td style="color: var(--success);">Büyür ▲</td>
+                                <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
                             </tr>
                             <tr>
                                 <td>Cisim</td>
                                 <td>Işık Kaynağına Yaklaşırsa</td>
-                                <td style="color: var(--success);">Büyür ▲</td>
+                                <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
                             </tr>
                             <tr>
                                 <td>Ekran (Perde)</td>
                                 <td>Cisimden Uzaklaşırsa</td>
-                                <td style="color: var(--success);">Büyür ▲</td>
+                                <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
                             </tr>
                         </tbody>
                     </table>
-                    <p style="text-align: center; max-width: 600px;">Işık doğrusal yayıldığı için engelin (cisim) ışığa olan uzaklığı veya ekranın konumu gölgenin boyutunu doğrudan etkiler.</p>
-                    <button id="btn-restart" class="btn btn-start" style="padding: 10px 30px; font-size: 18px;">Deneyi Tekrarla</button>
+                    <p style="text-align: center; max-width: 700px; font-size: 20px; color: #E3F2FD; line-height: 1.6;">Işık doğrusal yayıldığı için engelin (cisim) ışığa olan uzaklığı veya ekranın konumu gölgenin boyutunu doğrudan etkiler.</p>
+                    <button id="btn-restart" class="btn btn-start" style="padding: 12px 40px; font-size: 20px; margin-top: 25px; background: #66BB6A; box-shadow: 0 6px 0 #2E7D32;">Deneyi Tekrarla</button>
                 </section>
 
                 <svg id="light-beam-svg">
                     <defs>
                         <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:rgba(253, 224, 71, 0.4)" />
-                            <stop offset="100%" style="stop-color:rgba(253, 224, 71, 0)" />
+                            <!-- Işık hüzmesi rengi sarı, yumuşak geçişli -->
+                            <stop offset="0%" style="stop-color:rgba(255, 235, 59, 0.4)" />
+                            <stop offset="100%" style="stop-color:rgba(255, 235, 59, 0)" />
                         </linearGradient>
                     </defs>
                     <polygon id="beam-path" fill="url(#beamGrad)" />
@@ -546,13 +659,9 @@
 
         // --- Event Listeners ---
         
-        // Başlatma
         ui.btnStart.addEventListener('click', startExperiment);
-        
-        // Yeniden Başlatma
         ui.btnRestart.addEventListener('click', () => location.reload());
 
-        // Navigasyon Butonları
         ui.navButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const step = parseInt(e.target.dataset.step);
@@ -560,18 +669,13 @@
             });
         });
 
-        // Mouse ve Touch
         window.addEventListener('mousedown', onStart);
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onEnd);
         window.addEventListener('touchstart', onStart, {passive: false});
         window.addEventListener('touchmove', onMove, {passive: false});
         window.addEventListener('touchend', onEnd);
-
-        // Klavye
         window.addEventListener('keydown', onKeyDown);
-
-        // Pencere Boyutlandırma
         window.addEventListener('resize', updateScene);
         window.addEventListener('load', updateScene);
 
@@ -588,7 +692,6 @@
             currentStep = n;
             ui.navButtons.forEach(b => b.classList.remove('active'));
             
-            // Veri özniteliği ile butonu bul (daha güvenli)
             const activeBtn = document.querySelector(`.btn-nav[data-step="${n}"]`);
             if (activeBtn) activeBtn.classList.add('active');
             
@@ -604,7 +707,6 @@
                 ui.evaluationScreen.classList.remove('show');
                 if(steps[n].target) {
                     steps[n].target.classList.add('active-step');
-                    // Erişilebilirlik: Adım değiştiğinde odaklanılabilir hale getir
                     steps[n].target.focus();
                 }
             }
@@ -622,13 +724,11 @@
             const stageH = rect.height;
             const centerY = stageH / 2;
 
-            // responsive olarak ekran boyutunu ayarla
             const screenW = Math.max(80, Math.min(160, Math.round(stageW * 0.14)));
             const screenH = Math.max(100, Math.min(stageH * 0.9, Math.round(stageH * 0.6)));
             ui.screen.style.width = screenW + 'px';
             ui.screen.style.height = screenH + 'px';
 
-            // element genişlikleri
             const fW = ui.flashlight.offsetWidth || 60;
             const fH = ui.flashlight.offsetHeight || 60;
             const oW = ui.object.offsetWidth || 60;
@@ -636,12 +736,10 @@
             const sW = ui.screen.offsetWidth || screenW;
             const sH = ui.screen.offsetHeight || screenH;
 
-            // yüzde -> piksel
             const lxPx = Math.round(state.lx * stageW);
             const oxPx = Math.round(state.ox * stageW);
             const sxPx = Math.round(state.sx * stageW);
 
-            // Konumlandırma
             ui.flashlight.style.left = (lxPx - fW/2) + "px";
             ui.flashlight.style.top = (centerY - fH/2) + "px";
             ui.object.style.left = (oxPx - oW/2) + "px";
@@ -649,7 +747,6 @@
             ui.screen.style.left = (sxPx - sW/2) + "px";
             ui.screen.style.top = (centerY - sH/2) + "px";
 
-            // Işık ve Gölge Hesaplama
             const fX = lxPx;
             const oX = oxPx;
             const sX = sxPx;
@@ -659,10 +756,9 @@
             const distLS = Math.max(distLO + 10, sX - fX);
 
             let shadowH = (objR * 2 * distLS) / distLO;
-            shadowH = Math.min(shadowH, sH - 20); // Perde içine sığdır
+            shadowH = Math.min(shadowH, sH - 20); 
             ui.shadow.style.height = shadowH + "px";
             
-            // Gölge Ortalaması
             const shadowW = Math.max(20, shadowH * 0.75);
             const constrainedShadowW = Math.min(shadowW, sW - 10);
             const constrainedShadowH = Math.min(shadowH, sH - 10);
@@ -675,13 +771,10 @@
             ui.shadow.style.width = constrainedShadowW + "px";
             ui.shadow.style.height = constrainedShadowH + "px";
 
-            // Işık Hüzmesi
             const sTopY = centerY - (shadowH / 2);
             const sBottomY = centerY + (shadowH / 2);
             ui.beamPath.setAttribute("points", `${fX},${centerY} ${sX},${sTopY} ${sX},${sBottomY}`);
         }
-
-        // --- SÜRÜKLEME VE KONTROL MANTIĞI ---
 
         function getClientXFromEvent(e) {
             if (e.touches && e.touches.length) return e.touches[0].clientX;
@@ -693,11 +786,9 @@
             const el = e.target.closest('.draggable');
             if (!el) return;
             
-            // Sadece aktif adımın hedef elementini hareket ettir
             const stepTarget = steps[currentStep].target;
             if (stepTarget && el !== stepTarget) return;
 
-            // Dokunmatik kaydırmayı engelle
             if(e.type === 'touchstart') e.preventDefault();
             
             isDragging = true;
@@ -713,7 +804,6 @@
             const clientX = getClientXFromEvent(e);
             let x = clientX - rect.left;
             
-            // Mouse pozisyonunu yüzdeye çevir
             let pct = x / rect.width;
             updateElementPosition(activeEl, pct);
         }
@@ -724,14 +814,12 @@
             if (currentStep === 4) return;
             const activeElement = document.activeElement;
             
-            // Sadece aktif adımın hedefi ise hareket et
             if (activeElement.classList.contains('draggable') && activeElement === steps[currentStep].target) {
                 let currentPct = 0;
                 if (activeElement === ui.flashlight) currentPct = state.lx;
                 else if (activeElement === ui.object) currentPct = state.ox;
                 else if (activeElement === ui.screen) currentPct = state.sx;
 
-                // %1'lik adımlarla hareket
                 if (e.key === 'ArrowLeft') {
                     updateElementPosition(activeElement, currentPct - 0.01);
                 } else if (e.key === 'ArrowRight') {
@@ -740,13 +828,9 @@
             }
         }
 
-        // Merkezi Konum Güncelleme Mantığı (Klavye ve Mouse Ortak Kullanır)
         function updateElementPosition(element, targetPct) {
             const rect = ui.stage.getBoundingClientRect();
-            
-            // Sınırlandırma (0.02 ile 0.98 arası)
             targetPct = Math.max(0.02, Math.min(0.98, targetPct));
-
             const minGapPx = 60;
             const minGapPct = minGapPx / rect.width;
 
