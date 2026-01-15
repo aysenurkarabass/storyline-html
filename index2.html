@@ -46,6 +46,15 @@
             justify-content: center;
         }
 
+        /* Scrollbar Gizleme (Global) */
+        * {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE 10+ */
+        }
+        *::-webkit-scrollbar { 
+            display: none; /* Chrome/Safari */
+        }
+
         /* --- 16:9 ANA KAPSAYICI --- */
         #app-container {
             position: relative;
@@ -171,7 +180,6 @@
             gap: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        /* İkon kaldırıldığı için stil gereksiz ama temizlik için siliyoruz */
         .warning-box p {
             margin: 0;
             font-size: clamp(14px, 1.5vw, 18px);
@@ -247,12 +255,12 @@
 
         .instruction-box {
             background: #FFFFFF;
-            padding: 2vh 2vw;
+            padding: 1.5vh 1.5vw; /* Padding küçültüldü */
             border-radius: 25px;
             border: 3px solid #E1F5FE;
-            border-left: 10px solid var(--btn-color);
-            font-size: clamp(14px, 1.8vh, 18px);
-            line-height: 1.5;
+            border-left: 8px solid var(--btn-color);
+            font-size: clamp(12px, 1.6vh, 16px); /* Font küçültüldü */
+            line-height: 1.4;
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -264,41 +272,41 @@
 
         .result-box {
             background: #FFFFFF;
-            padding: 2vh 2vw;
+            padding: 1.5vh 1.5vw; /* Padding küçültüldü */
             border-radius: 25px;
-            border: 4px dashed #FFB74D;
+            border: 3px dashed #FFB74D;
             color: #F57C00;
             font-weight: 600;
-            font-size: clamp(16px, 2vh, 20px);
+            font-size: clamp(13px, 1.7vh, 18px); /* Font ciddi oranda küçültüldü */
             margin-top: auto;
-            line-height: 1.4;
+            line-height: 1.3;
             box-shadow: 0 5px 15px rgba(255, 224, 178, 0.5);
         }
 
         .result-box-title {
-            font-size: clamp(12px, 1.5vh, 14px);
+            font-size: clamp(11px, 1.4vh, 13px);
             color: #90A4AE;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 10px;
+            letter-spacing: 1.2px;
+            margin-bottom: 0.5vh;
             font-weight: 700;
         }
 
         .nav-buttons {
             margin-top: auto;
-            padding-top: 2vh;
+            padding-top: 1vh; /* Padding küçültüldü */
             display: flex;
             flex-direction: column;
-            gap: 1vh;
+            gap: 0.8vh; /* Gap küçültüldü */
         }
 
         .btn-nav {
             background: #ECEFF1;
             color: #546E7A;
-            padding: 1.5vh 1vw;
-            border-radius: 15px;
+            padding: 1vh 0.5vw; /* Padding sıkılaştırıldı */
+            border-radius: 12px;
             cursor: pointer;
-            font-size: clamp(14px, 1.8vh, 18px);
+            font-size: clamp(12px, 1.5vh, 15px); /* Font küçültüldü */
             font-weight: 600;
             transition: all 0.2s;
             font-family: 'Fredoka', sans-serif;
@@ -310,16 +318,16 @@
             background: var(--btn-color); 
             color: white; 
             border-color: transparent;
-            box-shadow: 0 0.5vh 1vh rgba(41, 182, 246, 0.3);
+            box-shadow: 0 0.4vh 0.8vh rgba(41, 182, 246, 0.3);
         }
         .btn-nav.finish { 
             background: var(--success); 
             color: white;
-            box-shadow: 0 0.4vh 0 #43A047;
-            margin-bottom: 4px;
+            box-shadow: 0 0.3vh 0 #43A047;
+            margin-bottom: 2px;
         }
-        .btn-nav.finish:hover { background: #4CAF50; transform: translateY(-2px); box-shadow: 0 0.6vh 0 #43A047; }
-        .btn-nav.finish:active { transform: translateY(2px); box-shadow: 0 0.2vh 0 #43A047; }
+        .btn-nav.finish:hover { background: #4CAF50; transform: translateY(-2px); box-shadow: 0 0.5vh 0 #43A047; }
+        .btn-nav.finish:active { transform: translateY(2px); box-shadow: 0 0.1vh 0 #43A047; }
 
         /* Sağ Panel (Deney Sahnesi) */
         #stage {
@@ -443,8 +451,8 @@
         #instruction-text {
             flex: 1;
             overflow-y: auto;
-            margin-bottom: 15px;
-            font-size: 2.2vh;
+            margin-bottom: 1vh; /* Margin küçültüldü */
+            font-size: 1em; /* inherit from box */
             color: var(--text-main);
         }
 
