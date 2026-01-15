@@ -3,113 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tam Gölge Laboratuvarı - Eğlenceli Deney</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Tam Gölge Laboratuvarı - Adım Adım Deney</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* --- 5. Sınıf - Soft & Renkli Palet --- */
-            
-            /* Genel Arka Plan: Göz yormayan, açık pastel mavi */
-            --bg-body: #E3F2FD; 
-            
-            /* Kartlar ve Paneller: Beyaz ve temiz */
-            --bg-card: #FFFFFF;
-            
-            /* Sahne: Deney için koyu ama korkutucu olmayan "Uzay Mavisi" */
-            --bg-stage-gradient-start: #3E51B5; /* İndigo */
-            --bg-stage-gradient-end: #1A237E;   /* Derin Lacivert */
-
-            /* Ana Renk (Başlıklar, Çizgiler): Dost canlısı Mavi */
-            --primary: #4FC3F7; /* Açık Mavi */
-            --primary-text: #0277BD; /* Koyu Mavi (Yazılar için) */
-            
-            /* Butonlar ve Vurgular */
-            --btn-color: #29B6F6;
-            --accent: #FFCA28; /* Amber (Güneş Sarısı) */
-            
-            /* Başarı/Sonuç: Yumuşak Yeşil */
-            --success: #66BB6A;
-            
-            /* Metin Renkleri (Açık zemin üzerinde koyu yazı) */
-            --text-main: #455A64; /* Koyu Gri-Mavi */
-            --text-muted: #78909C;
-            --text-light: #FFFFFF; /* Koyu zeminler için beyaz */
-            
-            /* Düzen Değişkenleri */
+            --bg-dark: #0f172a;
+            --primary: #38bdf8;
+            --accent: #fde047;
             --axis-y: 250px;
-            
-            /* Katman Yönetimi */
-            --z-beam: 1;
-            --z-screen-obj: 5;
-            --z-drag-item: 10;
-            --z-evaluation: 50;
-            --z-overlay: 100;
-            --z-logo: 101;
+            --success: #4ade80;
         }
 
         body {
             font-family: 'Fredoka', sans-serif;
-            background-color: var(--bg-body);
-            /* Arka plana hafif puantiye deseni ekleyerek eğlence katalım */
-            background-image: radial-gradient(#B3E5FC 2px, transparent 2px);
-            background-size: 30px 30px;
-            color: var(--text-main);
+            background-color: var(--bg-dark);
+            color: white;
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100vh;
             overflow: hidden;
             user-select: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
-
-        /* --- LOGO STİLİ --- */
-        .site-logo {
-            position: absolute;
-            right: 25px;
-            top: 50%;
-            transform: translateY(-50%);
-            height: auto;
-            max-height: 85%;
-            width: auto;
-            max-width: 110px;
-            z-index: 20;
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
-            pointer-events: none;
-        }
-
-        .intro-header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: auto;
-            padding: 20px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            box-sizing: border-box;
-            z-index: 102;
-            pointer-events: none;
-        }
-
-        .intro-logo {
-            width: 140px;
-            height: auto;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-        }
-
         /* Giriş Ekranı */
         #intro-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Buzlu cam efekti ve yarı saydam beyaz arka plan */
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: var(--z-overlay);
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 100;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -120,86 +41,60 @@
         }
 
         .intro-card {
-            background: #FFFFFF;
-            padding: 50px;
-            border-radius: 40px;
-            /* Renkli, kalın kenarlık */
-            border: 6px solid var(--primary);
-            max-width: 800px;
-            max-height: 90%;
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid var(--primary);
+            max-width: 90%;
+            max-height: 80%;
             overflow: auto;
-            box-shadow: 0 20px 50px rgba(79, 195, 247, 0.3);
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.3);
         }
-
-        /* Buton Stilleri - Şeker gibi */
-        .btn {
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            font-family: inherit;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn:focus-visible {
-            outline: 4px solid var(--accent);
-            outline-offset: 2px;
-        }
-        .btn:active { transform: scale(0.95) !important; }
 
         .btn-start {
-            background: #FF7043; /* Canlı Mercan Rengi */
-            color: white;
-            padding: 18px 60px;
-            font-size: 30px;
+            background: var(--primary);
+            color: var(--bg-dark);
+            border: none;
+            padding: 15px 40px;
+            font-size: 33px;
             font-weight: 600;
             border-radius: 50px;
-            margin-top: 30px;
-            box-shadow: 0 8px 0 #D84315; /* 3D efekt */
-            margin-bottom: 8px;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: transform 0.2s, background 0.2s;
         }
-        .btn-start:hover { 
-            background: #FF8A65; 
-            transform: translateY(-4px); 
-            box-shadow: 0 12px 0 #D84315;
-        }
-        .btn-start:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #D84315;
-        }
+        .btn-start:hover { transform: scale(1.1); background: #7dd3fc; }
 
         .warning-box {
-            background: #FFF8E1; /* Çok açık sarı */
-            border-left: 8px solid #FFCA28;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 30px;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-left: 4px solid #f39c12;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 20px;
             display: flex;
-            align-items: center;
-            gap: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            align-items: flex-start;
+            gap: 10px;
         }
         .warning-box .warning-icon {
             flex-shrink: 0;
-            color: #FFB300;
-            width: 32px;
-            height: 32px;
+            color: #d68910;
+            margin-top: 2px;
         }
         .warning-box p {
             margin: 0;
-            font-size: 18px;
+            font-size: 13px;
             line-height: 1.5;
-            color: #795548;
+            color: #856404;
             font-weight: 500;
-            text-align: left;
         }
 
-        /* Ana Sahne Yapısı */
+        /* Ana Sahne - Storyline Web Object için */
         #main-container {
             width: 100%;
             height: 100vh;
             margin: 0;
             position: relative;
-            display: none;
+            display: flex;
             flex-direction: column;
             gap: 0;
             padding: 0;
@@ -207,40 +102,89 @@
             overflow: hidden;
         }
 
-        /* HEADER */
         #header-section {
-            background: #FFFFFF;
-            padding: 1.5vh 0;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 3px solid var(--primary);
+            padding: 0.9vh;
             flex-shrink: 0;
             height: auto;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            z-index: 20;
-            border-bottom: 5px solid #81D4FA; /* Alt çizgi */
         }
 
         #step-title {
-            color: var(--primary-text);
-            font-size: 3.5vh;
-            font-weight: 600;
+            color: var(--primary);
+            font-size: 3vh;
             margin: 0;
-            line-height: 1.2;
             text-align: center;
-            padding: 0 120px;
+            line-height: 1.2;
         }
 
         #content-section {
             flex: 1;
             display: flex;
-            flex-direction: row;
-            gap: 20px;
-            padding: 20px;
+            flex-direction: row !important;
+            gap: 0.7%;
+            padding: 0.7%;
             box-sizing: border-box;
             align-items: stretch;
             overflow: hidden;
+            min-height: 0;
+        }
+
+        /* SONUÇ EKRANI - OVERLAY */
+        #evaluation-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 41, 59, 0.98);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        #evaluation-screen.show {
+            display: flex;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        .close-btn:hover {
+            transform: scale(1.2);
+            color: var(--primary);
+        }
+
+        #stage {
+            flex: 1;
+            width: 74%;
+            height: 100%;
+            background: linear-gradient(to bottom, #1e293b 0%, #0f172a 75%, #4527a0 75%, #311b92 100%);
+            border: 4px solid #334155;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            perspective: 1000px;
             min-height: 0;
         }
 
@@ -248,380 +192,331 @@
         #evaluation-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Sonuç ekranı arka planı: Yarı saydam koyu mavi */
-            background: rgba(26, 35, 126, 0.95);
-            z-index: var(--z-evaluation);
+            background: rgba(30, 41, 59, 0.98);
+            z-index: 50;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 40px;
             box-sizing: border-box;
-            overflow-y: auto;
-            border-radius: 25px; /* Sahne ile uyumlu köşe */
+            overflow-y: auto; /* make evaluation content scrollable */
         }
 
-        #evaluation-screen.show { display: flex; }
+        /* Custom scrollbar (WebKit browsers) */
+        body::-webkit-scrollbar {
+            width: 12px;
+        }
+        body::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.12);
+            border-radius: 10px;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
 
-        /* Scrollbar */
-        body::-webkit-scrollbar { width: 12px; }
-        body::-webkit-scrollbar-track { background: #ECEFF1; }
-        body::-webkit-scrollbar-thumb { background: #90A4AE; border-radius: 10px; border: 2px solid #ECEFF1; }
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.12) rgba(255,255,255,0.03);
+        }
 
         .result-table {
             width: 100%;
-            max-width: 800px;
-            border-collapse: separate;
-            border-spacing: 0;
-            background: #FFFFFF; /* Tablo içi beyaz */
-            border-radius: 25px;
+            max-width: 700px;
+            border-collapse: collapse;
+            background: #0f172a;
+            border-radius: 15px;
             overflow: hidden;
-            margin: 30px 0;
-            font-size: 18px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            border: 4px solid #FFF;
+            margin: 20px 0;
+            font-size: clamp(9px, 1.8vw, 14px);
         }
         .result-table th, .result-table td {
-            padding: 18px 25px;
-            border-bottom: 2px solid #F0F0F0;
+            padding: clamp(10px, 1.5vw, 15px);
+            border: 1px solid #334155;
             text-align: left;
-            color: var(--text-main);
         }
-        .result-table th { 
-            background: #29B6F6; 
-            color: white; 
-            font-weight: 600;
-            border: none;
-        }
-        .result-table tr:last-child td { border-bottom: none; }
+        .result-table th { background: var(--primary); color: #000; }
 
-        /* Sol Panel (Kontrol ve Bilgi) */
+        #evaluation-screen h1 {
+            font-size: clamp(20px, 3.5vw, 28px);
+            margin-bottom: 20px;
+        }
+
+        #evaluation-screen p {
+            font-size: clamp(10px, 2vw, 16px);
+            line-height: 1.6;
+        }
+
+        /* Adım Bilgi Paneli */
         #step-panel {
-            width: 300px;
-            min-width: 280px;
-            max-width: 320px;
+            width: 20%;
+            min-width: 20%;
+            max-width: 20%;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 0.7vh;
             padding: 0;
             box-sizing: border-box;
             flex-shrink: 0;
         }
 
         .instruction-box {
-            background: #FFFFFF;
-            padding: 25px;
-            border-radius: 25px;
-            border: 3px solid #E1F5FE;
-            /* Sol tarafı renkli çizgiyle vurgula */
-            border-left: 10px solid var(--btn-color);
-            font-size: 18px; /* Küçültüldü (Eski: 20px) */
-            line-height: 1.5;
+            background: #1e293b;
+            padding: 0.9vh 0.8vw;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+            font-size: 2.4vh;
             display: flex;
             flex-direction: column;
             flex: 1;
             min-height: 0;
             overflow-y: auto;
-            box-shadow: 0 5px 15px rgba(179, 229, 252, 0.4);
-            color: var(--text-main);
         }
 
-        .result-box {
-            background: #FFFFFF;
-            padding: 20px;
-            border-radius: 25px;
-            border: 4px dashed #FFB74D; /* Turuncu kesik çizgi */
-            color: #F57C00; /* Koyu Turuncu Yazı */
+        .result-content {
+            color: var(--accent);
             font-weight: 600;
-            font-size: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .result-content h3 {
+            color: var(--success);
+            font-size: 24px;
+            margin: 0 0 15px 0;
+            text-align: center;
+        }
+
+        .result-table {
+            width: 100%;
+            max-width: 700px;
+            border-collapse: collapse;
+            background: #0f172a;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .result-table th, .result-table td {
+            padding: 15px;
+            border: 1px solid #334155;
+            text-align: left;
+        }
+        .result-table th { background: var(--primary); color: #000; }
+
+        .result-box {
+            background: #0f172a;
+            padding: 1.2vh 1vw;
+            border-radius: 12px;
+            border: 2px dashed #475569;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 2.9vh;
             margin-top: auto;
-            line-height: 1.4;
-            box-shadow: 0 5px 15px rgba(255, 224, 178, 0.5);
+            line-height: 1.3;
         }
 
         .result-box-title {
-            font-size: 14px;
-            color: #90A4AE;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 10px;
-            font-weight: 700;
+            font-size: 2.3vh;
+            opacity: 0.7;
+            margin-bottom: 0.5vh;
         }
 
         .nav-buttons {
             margin-top: auto;
-            padding-top: 20px;
+            padding-top: 1vh;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 0.7vh;
         }
 
         .btn-nav {
-            background: #ECEFF1;
-            color: #546E7A;
-            padding: 14px 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: 600;
-            transition: all 0.2s;
-            font-family: 'Fredoka', sans-serif;
-            text-align: center;
-            border: 2px solid transparent;
-        }
-        .btn-nav:hover { 
-            background: #CFD8DC; 
-            transform: scale(1.02);
-        }
-        .btn-nav.active { 
-            background: var(--btn-color); 
-            color: white; 
-            border-color: transparent;
-            box-shadow: 0 6px 15px rgba(41, 182, 246, 0.3);
-        }
-        .btn-nav.finish { 
-            background: var(--success); 
+            background: #334155;
             color: white;
-            box-shadow: 0 4px 0 #43A047;
-            margin-bottom: 4px;
+            border: none;
+            padding: 1vh 0.8vw;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 2.4vh;
+            transition: all 0.3s;
+            font-family: 'Fredoka', sans-serif;
+            white-space: nowrap;
         }
-        .btn-nav.finish:hover { background: #4CAF50; transform: translateY(-2px); box-shadow: 0 6px 0 #43A047; }
-        .btn-nav.finish:active { transform: translateY(2px); box-shadow: 0 2px 0 #43A047; }
-
-        /* Sağ Panel (Deney Sahnesi) */
-        #stage {
-            flex: 1;
-            height: 100%;
-            /* Uzay/Laboratuvar hissi için derin mavi gradyan */
-            background: radial-gradient(circle at bottom, var(--bg-stage-gradient-start) 0%, var(--bg-stage-gradient-end) 100%);
-            border: 8px solid #FFFFFF;
-            border-radius: 30px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(62, 81, 181, 0.2);
-            perspective: 1000px;
-            min-height: 0;
-        }
+        .btn-nav:hover { background: #475569; transform: translateX(5px); }
+        .btn-nav.active { background: var(--primary); color: #000; font-weight: 600; }
+        .btn-nav.finish { background: var(--success); color: #000; }
 
         /* Simülasyon Elemanları */
-        #light-beam-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: var(--z-beam); }
-        
-        .draggable { 
-            position: absolute; 
-            cursor: grab; 
-            z-index: var(--z-drag-item); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            outline: none; 
-            transition: transform 0.1s;
-        }
-        .draggable:active { cursor: grabbing; transform: scale(1.1); }
-        .draggable:focus-visible { filter: drop-shadow(0 0 15px var(--accent)); }
-        
-        .active-step { 
-            /* Aktif öğe etrafında animasyonlu halka */
-            animation: bounce-highlight 2s infinite;
-        }
+        #light-beam-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .draggable { position: absolute; cursor: grab; z-index: 10; display: flex; align-items: center; justify-content: center; }
+        .draggable:active { cursor: grabbing; }
+        .active-step { outline: 4px solid var(--accent); outline-offset: 10px; border-radius: 10px; }
 
-        @keyframes bounce-highlight {
-            0%, 100% { filter: drop-shadow(0 0 5px #FFF176); transform: translateY(0); }
-            50% { filter: drop-shadow(0 0 20px #FFEB3B); transform: translateY(-3px); }
-        }
-
-        #flashlight { height: 70px; top: calc(var(--axis-y) - 35px); left: 80px; }
-        .f-body { width: 65px; height: 36px; background: #78909C; border-radius: 10px 0 0 10px; border: 2px solid #546E7A; }
-        .f-head { width: 35px; height: 70px; background: #455A64; border-radius: 8px; border-right: 8px solid #FFEB3B; box-shadow: 0 0 15px #FFEB3B; }
+        #flashlight { height: 60px; top: calc(var(--axis-y) - 30px); left: 80px; }
+        .f-body { width: 50px; height: 30px; background: #475569; border-radius: 6px 0 0 6px; }
+        .f-head { width: 25px; height: 60px; background: #1e293b; border-radius: 4px; border-right: 4px solid #fde047; }
 
         #object {
-            width: 70px; height: 70px;
-            /* Top daha parlak ve 3 boyutlu */
-            background: radial-gradient(circle at 35% 35%, #69F0AE, #00C853);
+            width: 60px; height: 60px;
+            background: radial-gradient(circle at 30% 30%, #4ade80, #166534);
             border-radius: 50%;
-            border: 3px solid #B9F6CA;
-            top: calc(var(--axis-y) - 35px); left: 450px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            top: calc(var(--axis-y) - 30px); left: 450px;
         }
 
         #screen-container {
-            position: absolute; top: 50px; left: 800px; width: 140px; height: 400px; z-index: var(--z-screen-obj);
+            position: absolute; top: 50px; left: 800px; width: 140px; height: 400px; z-index: 5;
             perspective: 800px;
         }
         #screen-surface {
-            width: 100%; height: 100%; background: #F5F5F5; border: 8px solid #37474F;
-            border-radius: 12px; position: relative; overflow: hidden;
-            transform: rotateY(-20deg);
-            transform-origin: center right;
-            box-shadow: -15px 15px 30px rgba(0,0,0,0.3);
+            width: 100%; height: 100%; background: #fff; border: 6px solid #1e1b4b;
+            border-radius: 4px; position: relative; overflow: hidden;
+            transform: rotateY(-30deg); transform-origin: center right;
+            box-shadow: -10px 10px 30px rgba(0,0,0,0.3);
         }
 
+        /* GÖLGE ŞEKLİ DÜZELTİLDİ (ELİPS/OVAL) */
         #shadow { 
             position: absolute;
-            background: rgba(0,0,0,0.85); 
+            background: rgba(0,0,0,0.96); 
             border-radius: 50%; 
-            filter: blur(5px);
+            filter: blur(2px);
             transition: width 0.1s, height 0.1s, left 0.1s, top 0.1s;
         }
 
         .label {
-            position: absolute; bottom: -55px; left: 50%; transform: translateX(-50%);
-            font-size: 15px; font-weight: 700; color: #FFFFFF; text-transform: uppercase;
-            /* Etiketler daha belirgin */
-            background: #546E7A; padding: 6px 14px; border-radius: 20px; white-space: nowrap;
-            pointer-events: none;
-            letter-spacing: 0.5px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            position: absolute; bottom: -45px; left: 50%; transform: translateX(-50%);
+            font-size: 12px; font-weight: 600; color: #94a3b8; text-transform: uppercase;
+            background: rgba(15, 23, 42, 0.8); padding: 2px 10px; border-radius: 10px; white-space: nowrap;
         }
 
         #instruction-text {
             flex: 1;
             overflow-y: auto;
             margin-bottom: 15px;
-            font-size: 2.2vh; /* Küçültüldü (Eski: 2.8vh) */
-            color: var(--text-main);
+            font-size: 2.7vh;
         }
 
-        /* Utility */
-        .hidden { display: none !important; }
+        /* Storyline Web Object - Media queries devre dışı */
     </style>
 </head>
 <body>
 
     <!-- GİRİŞ EKRANI -->
-    <section id="intro-overlay">
-        <!-- LOGO HEADER İÇİNDE -->
-        <div class="intro-header">
-            <img src="e12_logo_kare (1).png" alt="Logo" class="intro-logo">
-        </div>
-
+    <div id="intro-overlay">
         <div class="intro-card">
-            <h1 class="text-primary mb-3" style="color: var(--primary-text); margin-bottom: 25px; font-size: 42px;">Tam Gölge Laboratuvarına Hoş Geldin!</h1>
-            <p style="font-size: 22px; line-height: 1.6; color: var(--text-main);">
-                <b>Deneyin Amacı:</b> Işık kaynağı, opak cisim ve ekran arasındaki mesafelerin, oluşan tam gölgenin boyutuna etkisini adım adım keşfedelim.
+            <h1 style="color: var(--primary); margin-bottom: 15px;">Tam Gölge Laboratuvarına Hoş Geldin!</h1>
+            <p style="font-size: 18px; line-height: 1.6;">
+                <b>Deneyin Amacı:</b> Işık kaynağı, opak cisim ve ekran arasındaki mesafelerin, oluşan tam gölgenin boyutuna etkisini adım adım keşfetmek.
             </p>
-            <p style="opacity: 0.8; font-size: 20px; margin-top: 15px; color: var(--text-muted);">Hazırsan, gözlem yapmaya başlayalım!</p>
-            
+            <p style="opacity: 0.8;">Hazırsan, gözlem yapmaya başlayalım!</p>
             <div class="warning-box">
                 <svg class="warning-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <p>En iyi deneyim için bu simülasyonu geniş ekranlı bir bilgisayarda açmanı öneririz.</p>
+                <p>En iyi deneyim için bu simülasyonu geniş ekranlı bir bilgisayarda açmanızı öneririz. Mobil cihaz desteği şu an için bulunmamaktadır.</p>
             </div>
-
-            <button id="btn-start-exp" class="btn btn-start">Hadi Başlayalım!</button>
+            <button class="btn-start" onclick="startExperiment()">Hadi Başlayalım! 🚀</button>
         </div>
-    </section>
+    </div>
 
     <!-- DENEY ALANI -->
-    <main id="main-container">
+    <div id="main-container" style="display: none;">
         <!-- BAŞLIK -->
-        <header id="header-section">
+        <div id="header-section">
             <h2 id="step-title">Adım 1: Işık Kaynağı Hareketinin Gölgeye Etkisi</h2>
-            <!-- LOGO -->
-            <img src="e12_logo_kare (1).png" alt="Logo" class="site-logo">
-        </header>
+        </div>
 
-        <!-- İÇERİK -->
-        <section id="content-section">
-            <aside id="step-panel">
+        <!-- İÇERİK: ADIM PANELİ + DENEY ALANI -->
+        <div id="content-section">
+            <div id="step-panel">
                 <div class="instruction-box">
                     <div id="instruction-text">Yükleniyor...</div>
-                    <nav class="nav-buttons" aria-label="Adım Navigasyonu">
-                        <button id="btn1" class="btn btn-nav active" data-step="1">1. Adım</button>
-                        <button id="btn2" class="btn btn-nav" data-step="2">2. Adım</button>
-                        <button id="btn3" class="btn btn-nav" data-step="3">3. Adım</button>
-                        <button id="btn4" class="btn btn-nav finish" data-step="4">SONUÇ</button>
-                    </nav>
+                    <div class="nav-buttons">
+                        <button id="btn1" class="btn-nav active" onclick="setStep(1)">1. Adım</button>
+                        <button id="btn2" class="btn-nav" onclick="setStep(2)">2. Adım</button>
+                        <button id="btn3" class="btn-nav" onclick="setStep(3)">3. Adım</button>
+                        <button id="btn4" class="btn-nav finish" onclick="setStep(4)">SONUÇ 📋</button>
+                    </div>
                 </div>
                 <div class="result-box">
                     <div class="result-box-title">BİLİMSEL SONUÇ:</div>
                     <div id="result-text">Harekete geçerek gözlem yap!</div>
                 </div>
-            </aside>
+            </div>
         
             <div id="stage">
-                <!-- SONUÇ EKRANI PANELİ -->
-                <section id="evaluation-screen">
-                    <h1 style="color: #4FC3F7; margin: 0; font-size: 36px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Deney Sonuç Raporu</h1>
-                    <table class="result-table">
-                        <thead>
-                            <tr>
-                                <th>Değişken</th>
-                                <th>Yapılan İşlem</th>
-                                <th>Gölge Boyutu Değişimi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Işık Kaynağı</td>
-                                <td>Cisme Yaklaşırsa</td>
-                                <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
-                            </tr>
-                            <tr>
-                                <td>Cisim</td>
-                                <td>Işık Kaynağına Yaklaşırsa</td>
-                                <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
-                            </tr>
-                            <tr>
-                                <td>Ekran (Perde)</td>
-                                <td>Cisimden Uzaklaşırsa</td>
-                                <td style="color: #2E7D32; font-weight: 700;">Büyür ▲</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p style="text-align: center; max-width: 700px; font-size: 20px; color: #E3F2FD; line-height: 1.6;">Işık doğrusal yayıldığı için engelin (cisim) ışığa olan uzaklığı veya ekranın konumu gölgenin boyutunu doğrudan etkiler.</p>
-                    <button id="btn-restart" class="btn btn-start" style="padding: 12px 40px; font-size: 20px; margin-top: 25px; background: #66BB6A; box-shadow: 0 6px 0 #2E7D32;">Deneyi Tekrarla</button>
-                </section>
-
-                <svg id="light-beam-svg">
-                    <defs>
-                        <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <!-- Işık hüzmesi rengi sarı, yumuşak geçişli -->
-                            <stop offset="0%" style="stop-color:rgba(255, 235, 59, 0.4)" />
-                            <stop offset="100%" style="stop-color:rgba(255, 235, 59, 0)" />
-                        </linearGradient>
-                    </defs>
-                    <polygon id="beam-path" fill="url(#beamGrad)" />
-                </svg>
-
-                <div id="flashlight" class="draggable" tabindex="0" role="slider" aria-label="Işık Kaynağı" aria-valuemin="0" aria-valuemax="100">
-                    <div class="f-body"></div><div class="f-head"></div>
-                    <span class="label">Işık Kaynağı</span>
-                </div>
-
-                <div id="object" class="draggable" tabindex="0" role="slider" aria-label="Opak Cisim">
-                    <span class="label">Opak Cisim</span>
-                </div>
-
-                <div id="screen-container" class="draggable" tabindex="0" role="slider" aria-label="Ekran">
-                    <div id="screen-surface">
-                        <div id="shadow"></div>
-                    </div>
-                    <span class="label">Ekran (Perde)</span>
-                </div>
+            <!-- SONUÇ EKRANI PANELİ -->
+            <div id="evaluation-screen">
+                <h1 style="color: var(--success); margin: 0;">🔬 Deney Sonuç Raporu</h1>
+                <table class="result-table">
+                    <tr>
+                        <th>Değişken</th>
+                        <th>Yapılan İşlem</th>
+                        <th>Gölge Boyutu Değişimi</th>
+                    </tr>
+                    <tr>
+                        <td>Işık Kaynağı</td>
+                        <td>Cisme Yaklaşırsa</td>
+                        <td style="color: var(--success);">Büyür ▲</td>
+                    </tr>
+                    <tr>
+                        <td>Cisim</td>
+                        <td>Işık Kaynağına Yaklaşırsa</td>
+                        <td style="color: var(--success);">Büyür ▲</td>
+                    </tr>
+                    <tr>
+                        <td>Ekran (Perde)</td>
+                        <td>Cisimden Uzaklaşırsa</td>
+                        <td style="color: var(--success);">Büyür ▲</td>
+                    </tr>
+                </table>
+                <p style="text-align: center; max-width: 600px;">Işık doğrusal yayıldığı için engelin (cisim) ışığa olan uzaklığı veya ekranın konumu gölgenin boyutunu doğrudan etkiler.</p>
+                <button class="btn-start" style="padding: 10px 30px; font-size: 18px;" onclick="location.reload()">Deneyi Tekrarla 🔄</button>
             </div>
-        </section>
-    </main>
+
+            <svg id="light-beam-svg">
+                <defs>
+                    <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:rgba(253, 224, 71, 0.4)" />
+                        <stop offset="100%" style="stop-color:rgba(253, 224, 71, 0)" />
+                    </linearGradient>
+                </defs>
+                <polygon id="beam-path" fill="url(#beamGrad)" />
+            </svg>
+
+            <div id="flashlight" class="draggable">
+                <div class="f-body"></div><div class="f-head"></div>
+                <span class="label">Işık Kaynağı</span>
+            </div>
+
+            <div id="object" class="draggable">
+                <span class="label">Opak Cisim</span>
+            </div>
+
+            <div id="screen-container" class="draggable">
+                <div id="screen-surface">
+                    <div id="shadow"></div>
+                </div>
+                <span class="label">Ekran (Perde)</span>
+            </div>
+        </div>
+        </div>
+    </div>
 
     <script>
-        // DOM Elementleri
-        const ui = {
-            introOverlay: document.getElementById('intro-overlay'),
-            mainContainer: document.getElementById('main-container'),
-            stage: document.getElementById('stage'),
-            flashlight: document.getElementById('flashlight'),
-            object: document.getElementById('object'),
-            screen: document.getElementById('screen-container'),
-            shadow: document.getElementById('shadow'),
-            beamPath: document.getElementById('beam-path'),
-            evaluationScreen: document.getElementById('evaluation-screen'),
-            stepTitle: document.getElementById('step-title'),
-            instructionText: document.getElementById('instruction-text'),
-            resultText: document.getElementById('result-text'),
-            navButtons: document.querySelectorAll('.btn-nav'),
-            btnStart: document.getElementById('btn-start-exp'),
-            btnRestart: document.getElementById('btn-restart')
-        };
+        // Responsive pozisyonlama: pozisyonlar % olarak tutulur, piksellere stage boyutuna göre çevrilir.
+        const stage = document.getElementById('stage');
+        const flashlight = document.getElementById('flashlight');
+        const object = document.getElementById('object');
+        const screen = document.getElementById('screen-container');
+        const shadow = document.getElementById('shadow');
+        const beamPath = document.getElementById('beam-path');
+        const evaluationScreen = document.getElementById('evaluation-screen');
         
         let currentStep = 1;
         let isDragging = false;
@@ -630,24 +525,34 @@
         // yüzde tabanlı başlangıç pozisyonları (0..1 arası)
         let state = { lx: 0.08, ox: 0.45, sx: 0.8 };
 
+        function closeResults() {
+            evaluationScreen.classList.remove('show');
+            setStep(1);
+        }
+
+        function closeResults() {
+            evaluationScreen.classList.remove('show');
+            setStep(1);
+        }
+
         const steps = {
             1: {
                 title: "Adım 1: Işık Kaynağı Hareketinin Gölgeye Etkisi",
-                instruction: "Sadece ışık kaynağını ileri ve geri hareket ettirerek gölgedeki değişimi inceleyelim. (Mouse ile sürükle veya Klavye ok tuşlarını kullan)",
+                instruction: "Sadece ışık kaynağını ileri ve geri hareket ettirerek gölgedeki değişimi inceleyelim.",
                 result: "Işık kaynağı cisme yaklaştığında ışınlar daha geniş açıyla yayılır ve gölge büyür. Işık kaynağı uzaklaştığında ise gölge küçülür.",
-                target: ui.flashlight
+                target: flashlight
             },
             2: {
                 title: "Adım 2: Cisim Hareketinin Gölgeye Etkisi",
                 instruction: "Sadece yeşil cismi ışık kaynağına yaklaştırıp uzaklaştırarak gölgeyi gözlemleyelim.",
                 result: "Cisim ışık kaynağına yaklaştığında daha fazla ışığı engeller ve ekrandaki gölge büyür. Cisim ekrana yaklaştığında ise gölge küçülür.",
-                target: ui.object
+                target: object
             },
             3: {
                 title: "Adım 3: Ekran (Perde) Hareketinin Gölgeye Etkisi",
                 instruction: "Sadece beyaz ekranı (perdeyi) cisme yaklaştırıp uzaklaştırarak gölge boyutunu gözlemleyelim.",
                 result: "Ekran cisimden uzaklaştıkça ışık ışınlarının yayıldığı alan genişler ve gölge büyür. Perde cisme yaklaştığında gölge küçülür.",
-                target: ui.screen
+                target: screen
             },
             4: {
                 title: "Deney Tamamlandı!",
@@ -657,123 +562,105 @@
             }
         };
 
-        // --- Event Listeners ---
-        
-        ui.btnStart.addEventListener('click', startExperiment);
-        ui.btnRestart.addEventListener('click', () => location.reload());
-
-        ui.navButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const step = parseInt(e.target.dataset.step);
-                setStep(step);
-            });
-        });
-
-        window.addEventListener('mousedown', onStart);
-        window.addEventListener('mousemove', onMove);
-        window.addEventListener('mouseup', onEnd);
-        window.addEventListener('touchstart', onStart, {passive: false});
-        window.addEventListener('touchmove', onMove, {passive: false});
-        window.addEventListener('touchend', onEnd);
-        window.addEventListener('keydown', onKeyDown);
-        window.addEventListener('resize', updateScene);
-        window.addEventListener('load', updateScene);
-
-        // --- Fonksiyonlar ---
-
         function startExperiment() {
-            ui.introOverlay.style.display = 'none';
-            ui.mainContainer.style.display = 'flex';
+            document.getElementById('intro-overlay').style.display = 'none';
+            document.getElementById('main-container').style.display = 'flex';
             setStep(1);
+            // sahne ilk render'ı güncelle
             updateScene();
         }
 
         function setStep(n) {
             currentStep = n;
-            ui.navButtons.forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
+            const btn = document.getElementById('btn' + n);
+            if (btn) btn.classList.add('active');
             
-            const activeBtn = document.querySelector(`.btn-nav[data-step="${n}"]`);
-            if (activeBtn) activeBtn.classList.add('active');
-            
-            ui.stepTitle.innerText = steps[n].title;
-            ui.instructionText.innerHTML = steps[n].instruction;
-            ui.resultText.innerText = steps[n].result;
-
-            removeHighlights();
+            document.getElementById('step-title').innerText = steps[n].title;
+            document.getElementById('instruction-text').innerHTML = steps[n].instruction;
+            document.getElementById('result-text').innerText = steps[n].result;
 
             if (n === 4) {
-                ui.evaluationScreen.classList.add('show');
+                evaluationScreen.classList.add('show');
+                [flashlight, object, screen].forEach(el => el.classList.remove('active-step'));
             } else {
-                ui.evaluationScreen.classList.remove('show');
-                if(steps[n].target) {
-                    steps[n].target.classList.add('active-step');
-                    steps[n].target.focus();
-                }
+                evaluationScreen.classList.remove('show');
+                [flashlight, object, screen].forEach(el => el.classList.remove('active-step'));
+                if(steps[n].target) steps[n].target.classList.add('active-step');
             }
             
             updateScene();
         }
 
-        function removeHighlights() {
-            [ui.flashlight, ui.object, ui.screen].forEach(el => el.classList.remove('active-step'));
-        }
-
         function updateScene() {
-            const rect = ui.stage.getBoundingClientRect();
+            const rect = stage.getBoundingClientRect();
             const stageW = rect.width;
             const stageH = rect.height;
             const centerY = stageH / 2;
 
+            // responsive olarak ekran boyutunu ayarla (yüksek ekranlarda sınırla)
             const screenW = Math.max(80, Math.min(160, Math.round(stageW * 0.14)));
             const screenH = Math.max(100, Math.min(stageH * 0.9, Math.round(stageH * 0.6)));
-            ui.screen.style.width = screenW + 'px';
-            ui.screen.style.height = screenH + 'px';
+            screen.style.width = screenW + 'px';
+            screen.style.height = screenH + 'px';
 
-            const fW = ui.flashlight.offsetWidth || 60;
-            const fH = ui.flashlight.offsetHeight || 60;
-            const oW = ui.object.offsetWidth || 60;
-            const oH = ui.object.offsetHeight || 60;
-            const sW = ui.screen.offsetWidth || screenW;
-            const sH = ui.screen.offsetHeight || screenH;
+            // element genişlikleri (güncel DOM boyutları)
+            const fW = flashlight.offsetWidth || 60;
+            const fH = flashlight.offsetHeight || 60;
+            const oW = object.offsetWidth || 60;
+            const oH = object.offsetHeight || 60;
+            const sW = screen.offsetWidth || screenW;
+            const sH = screen.offsetHeight || screenH;
 
+            // yüzde -> piksel (container içi koordinat)
             const lxPx = Math.round(state.lx * stageW);
             const oxPx = Math.round(state.ox * stageW);
             const sxPx = Math.round(state.sx * stageW);
 
-            ui.flashlight.style.left = (lxPx - fW/2) + "px";
-            ui.flashlight.style.top = (centerY - fH/2) + "px";
-            ui.object.style.left = (oxPx - oW/2) + "px";
-            ui.object.style.top = (centerY - oH/2) + "px";
-            ui.screen.style.left = (sxPx - sW/2) + "px";
-            ui.screen.style.top = (centerY - sH/2) + "px";
+            // elementleri stage içinde konumlandır (ortala)
+            flashlight.style.left = (lxPx - fW/2) + "px";
+            flashlight.style.top = (centerY - fH/2) + "px";
+            object.style.left = (oxPx - oW/2) + "px";
+            object.style.top = (centerY - oH/2) + "px";
+            screen.style.left = (sxPx - sW/2) + "px";
+            screen.style.top = (centerY - sH/2) + "px";
 
+            // ışık noktaları (center of elements)
             const fX = lxPx;
             const oX = oxPx;
             const sX = sxPx;
             const objR = Math.max(10, oW/2);
 
+            // uzaklıklar px
             const distLO = Math.max(30, oX - fX);
             const distLS = Math.max(distLO + 10, sX - fX);
 
+            // gölge yüksekliği hesapla (perspektiften elips)
             let shadowH = (objR * 2 * distLS) / distLO;
-            shadowH = Math.min(shadowH, sH - 20); 
-            ui.shadow.style.height = shadowH + "px";
+            // sınırlama: perde yüksekliği içine sığdır (20px margin)
+            shadowH = Math.min(shadowH, sH - 20);
+            shadow.style.height = shadowH + "px";
             
+            // shadow pozisyonunu ekran yüzeyinde konumlandır (absolute positioning)
             const shadowW = Math.max(20, shadowH * 0.75);
+            // Gölge perdede sınırları içinde kalmalı
             const constrainedShadowW = Math.min(shadowW, sW - 10);
             const constrainedShadowH = Math.min(shadowH, sH - 10);
             
-            const shadowLeft = (sW - constrainedShadowW) / 2;
-            const shadowTop = (sH - constrainedShadowH) / 2;
+            // gölge perdenin hem yatay hem dikey ortasında
+            const shadowLeft = (sW - constrainedShadowW) / 2; // Yatay ortada
+            const shadowTop = (sH - constrainedShadowH) / 2; // Dikey ortada
             
-            ui.shadow.style.left = shadowLeft + "px";
-            ui.shadow.style.top = shadowTop + "px";
-            ui.shadow.style.width = constrainedShadowW + "px";
-            ui.shadow.style.height = constrainedShadowH + "px";
+            shadow.style.left = shadowLeft + "px";
+            shadow.style.top = shadowTop + "px";
+            shadow.style.width = constrainedShadowW + "px";
+            shadow.style.height = constrainedShadowH + "px";
 
+            // beam polygon için üst-alt noktaları stage koordinatına göre ayarla
             const sTopY = centerY - (shadowH / 2);
             const sBottomY = centerY + (shadowH / 2);
-            ui.beamPath.setAttribute("points", `${fX},${centerY} ${sX},${sTopY} ${sX},${sBottomY}`);
+            // polygon points: fX,centerY  sX,sTopY  sX,sBottomY
+            beamPath.setAttribute("points", `${fX},${centerY} ${sX},${sTopY} ${sX},${sBottomY}`);
         }
 
         function getClientXFromEvent(e) {
@@ -786,64 +673,55 @@
             const el = e.target.closest('.draggable');
             if (!el) return;
             
+            // Sadece aktif adımın hedef elementini hareket ettir
             const stepTarget = steps[currentStep].target;
-            if (stepTarget && el !== stepTarget) return;
-
-            if(e.type === 'touchstart') e.preventDefault();
+            if (stepTarget && el !== stepTarget) {
+                return; // Bu adımda bu element hareket edemez
+            }
             
             isDragging = true;
             activeEl = el;
-            activeEl.focus();
         }
 
         function onMove(e) {
             if (!isDragging || !activeEl) return;
-            if(e.type === 'touchmove') e.preventDefault();
-            
-            const rect = ui.stage.getBoundingClientRect();
+            const rect = stage.getBoundingClientRect();
             const clientX = getClientXFromEvent(e);
             let x = clientX - rect.left;
-            
+            // normalize (0..1)
             let pct = x / rect.width;
-            updateElementPosition(activeEl, pct);
+            pct = Math.max(0.02, Math.min(0.98, pct));
+
+            // min gap'ler element genişliklerine göre yüzdeye çevrilir
+            const minGapPx = 60; // öğeler arası minimum px boşluk
+            const minGapPct = minGapPx / rect.width;
+
+            if (activeEl === flashlight) {
+                // flashlight max olarak objeden önce olmalı
+                state.lx = Math.min(pct, state.ox - minGapPct);
+                state.lx = Math.max(0.02, state.lx);
+            } else if (activeEl === object) {
+                state.ox = Math.max(state.lx + minGapPct, Math.min(pct, state.sx - minGapPct));
+            } else if (activeEl === screen) {
+                state.sx = Math.max(state.ox + minGapPct, Math.min(pct, 0.98));
+            }
+            updateScene();
         }
 
         function onEnd() { isDragging = false; activeEl = null; }
 
-        function onKeyDown(e) {
-            if (currentStep === 4) return;
-            const activeElement = document.activeElement;
-            
-            if (activeElement.classList.contains('draggable') && activeElement === steps[currentStep].target) {
-                let currentPct = 0;
-                if (activeElement === ui.flashlight) currentPct = state.lx;
-                else if (activeElement === ui.object) currentPct = state.ox;
-                else if (activeElement === ui.screen) currentPct = state.sx;
+        window.addEventListener('mousedown', onStart);
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onEnd);
+        window.addEventListener('touchstart', onStart, {passive: true});
+        window.addEventListener('touchmove', onMove, {passive: true});
+        window.addEventListener('touchend', onEnd);
 
-                if (e.key === 'ArrowLeft') {
-                    updateElementPosition(activeElement, currentPct - 0.01);
-                } else if (e.key === 'ArrowRight') {
-                    updateElementPosition(activeElement, currentPct + 0.01);
-                }
-            }
-        }
+        // pencere yeniden boyutlandığında yeniden çiz
+        window.addEventListener('resize', updateScene);
 
-        function updateElementPosition(element, targetPct) {
-            const rect = ui.stage.getBoundingClientRect();
-            targetPct = Math.max(0.02, Math.min(0.98, targetPct));
-            const minGapPx = 60;
-            const minGapPct = minGapPx / rect.width;
-
-            if (element === ui.flashlight) {
-                state.lx = Math.min(targetPct, state.ox - minGapPct);
-                state.lx = Math.max(0.02, state.lx);
-            } else if (element === ui.object) {
-                state.ox = Math.max(state.lx + minGapPct, Math.min(targetPct, state.sx - minGapPct));
-            } else if (element === ui.screen) {
-                state.sx = Math.max(state.ox + minGapPct, Math.min(targetPct, 0.98));
-            }
-            updateScene();
-        }
+        // ilk çizim (dosya yüklenince de çalışsın)
+        window.addEventListener('load', updateScene);
     </script>
 </body>
 </html>
